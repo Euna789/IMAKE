@@ -25,7 +25,8 @@ def hough_detect(frame):
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     gray = cv.medianBlur(gray,5)
 
-    circles = cv.HoughCircles(gray,cv.HOUGH_GRADIENT,1,80,param1=50,param2=10,minRadius=0,maxRadius=50)
+    circles = cv.HoughCircles(gray,cv.HOUGH_GRADIENT,1,minDist=80,\
+                               param1=50,param2=30,minRadius=0,maxRadius=70)
     center = None
     
     if circles is not None:

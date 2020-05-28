@@ -29,7 +29,7 @@ def upload_img(filename):
     view_url = server_ip + my_img
     
     qr = qrcode.make(view_url)
-    qr.save('output/qr_popimage.jpg')
+    qr.save('virus_imgs/output/qr_popimage.jpg')
 
 
 

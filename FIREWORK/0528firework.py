@@ -65,7 +65,7 @@ def timer(count):
         tic.cancel()
 
 #------------------------------- MAIN ----------------------------
-TARGET_FPS = 20
+TARGET_FPS = 60
 clock = pygame.time.Clock()
 
 display = (W, H)

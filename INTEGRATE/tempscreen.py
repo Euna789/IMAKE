@@ -10,6 +10,8 @@ from random import *
 import math
 import cv2
 import numpy as np
+import funcVirus
+
 '''
 mode
 0 == SLEEP_MODE
@@ -45,8 +47,10 @@ innerH= int(380)
 
 
 def gameScreen(StoU,recvXY):
+    
     screen = pygame.display.set_mode((W,H), DOUBLEBUF )
     pygame.init()
+    pygame.mixer.init()
     TARGET_FPS = 60
     clock = pygame.time.Clock()
     COUNT = 0
@@ -74,7 +78,7 @@ def gameScreen(StoU,recvXY):
     warning_start = False
     play_start = False
     reward_start = False
-    winner_mode = True
+    winner_mode = 0
 
     virus_winners = [0,0,0]
     firework_winners = [0,0,0]
@@ -127,6 +131,7 @@ def gameScreen(StoU,recvXY):
                     
                     
                 else:
+                    virus = funcVirus.VirusFunc(screen)
                     textSurfaceObj = fontObjBig.render("Let's start VIRUS", True, WHITE)
                     screen.blit(textSurfaceObj, (50,70))
                     mode = 20 # VIRUS
@@ -163,88 +168,90 @@ def gameScreen(StoU,recvXY):
             if reward_limit_time < 0:
                 reward_start = False
                 select_start = False
+
             else:
-##                if winner_mode == True:
-##                    text1 = myfont.render("1 st: " + str(reward_winners[0]),20,(0,128,0))
-##                    screen.blit(text1,(10,120))
-##                    text2 = myfont.render("2 nd: " + str(reward_winners[1]),20,(0,128,0))
-##                    screen.blit(text2,(10,140))
-##                    text3 = myfont.render("3 rd: " + str(reward_winners[2]),20,(0,128,0))
-##                    screen.blit(text3,(10,160))
-##
-##                    screen.blit(score1_img, (0,0)) # 1등 사진
-##                    screen.blit(my_screen_img, (5,H/2))
-##                    screen.blit(my_qr_img, (W/2-W/8, H/2))
-##                    screen.blit(my_person_img, (W-W/4-5, H/2))
-##                else:
+                if winner_mode == 1:
+                    my_person_img = upload_img('./firework_imgs/output/popimage.jpg') ##
+                    my_screen_img = pygame.image.load('./firework_imgs/output/screenshot.jpg')
+                    my_qr_img = pygame.image.load('./firework_imgs/output/qr_popimage.jpg')
+                    score1_img = pygame.image.load('./firework_imgs/output/score1.jpg')
+    
+                    my_person_img = pygame.transform.scale(my_person_img, (int(W/4), int(H/4)))
+                    my_qr_img = pygame.transform.scale(my_qr_img, (int(W/4), int(H/4)))
+                    my_screen_img = pygame.transform.scale(my_screen_img, (int(W/4), int(H/4)))
+                    score1_img = pygame.transform.scale(score1_img, (int(W/4), int(H/4)))
                     
+                    text1 = fontObj.render("1 st: " + str(reward_winners[0]),20,(0,128,0))
+                    screen.blit(text1,(10,120))
+                    text2 = fontObj.render("2 nd: " + str(reward_winners[1]),20,(0,128,0))
+                    screen.blit(text2,(10,140))
+                    text3 = fontObj.render("3 rd: " + str(reward_winners[2]),20,(0,128,0))
+                    screen.blit(text3,(10,160))
+
+                    screen.blit(score1_img, (0,0)) # 1등 사진
+                    screen.blit(my_screen_img, (5,H/2))
+                    screen.blit(my_qr_img, (W/2-W/8, H/2))
+                    screen.blit(my_person_img, (W-W/4-5, H/2))
                     
+                elif winner_mode == 2:
+                    my_person_img = upload_img('./virus_imgs/output/popimage.jpg') ##
+                    my_screen_img = pygame.image.load('./virus_imgs/output/screenshot.jpg')
+                    my_qr_img = pygame.image.load('./virus_imgs/output/qr_popimage.jpg')
+                    score1_img = pygame.image.load('./virus_imgs/output/score1.jpg')
+    
+                    my_person_img = pygame.transform.scale(my_person_img, (int(W/4), int(H/4)))
+                    my_qr_img = pygame.transform.scale(my_qr_img, (int(W/4), int(H/4)))
+                    my_screen_img = pygame.transform.scale(my_screen_img, (int(W/4), int(H/4)))
+                    score1_img = pygame.transform.scale(score1_img, (int(W/4), int(H/4)))
+                    
+                    text1 = fontObj.render("1 st: " + str(reward_winners[0]),20,(0,128,0))
+                    screen.blit(text1,(10,120))
+                    text2 = fontObj.render("2 nd: " + str(reward_winners[1]),20,(0,128,0))
+                    screen.blit(text2,(10,140))
+                    text3 = fontObj.render("3 rd: " + str(reward_winners[2]),20,(0,128,0))
+                    screen.blit(text3,(10,160))
+
+                    screen.blit(score1_img, (0,0)) # 1등 사진
+                    screen.blit(my_screen_img, (5,H/2))
+                    screen.blit(my_qr_img, (W/2-W/8, H/2))
+                    screen.blit(my_person_img, (W-W/4-5, H/2))
+
+                elif winner_mode == 3:
+                    textSurfaceObj = fontObj.render("REWARD TIME:"+str(reward_limit_time), True, GREEN)
+                    screen.blit(textSurfaceObj, (10,400))
+                                        
                 textSurfaceObj = fontObj.render("REWARD TIME:"+str(reward_limit_time), True, GREEN)
                 screen.blit(textSurfaceObj, (10,400))
                 
         else:   #[컨텐츠 실행 처리]
             play_limit_time = PLAY_TIME -int(time.time()-play_start_time)
+            ret, frame = frontcam.read()
+            
             if play_limit_time < 0: #리워드로 넘어가야됨 -----> 수정) Play_start == False
                 play_start = False
                 mode = 2
-                reward_start_time = time.time()
-            
+                reward_start_time = time.time()     
                 
             else:
                 textSurfaceObj = fontObj.render("PLAY TIME:"+str(play_limit_time), True, GREEN)
                 screen.blit(textSurfaceObj, (100,10))
                 if mode == 10:
-        ##            if cam_on :
-        ##                ret, frame = frontcam.read() #배경캡쳐 됨
-        ##                cv2.imshow("screen",frame)
-                    #play_start, score, firework(screen, frame,
-                    #if play_start == False:
-                    #   my_person_img = upload_img('output/popimage.jpg')
-                    #   my_screen_img = pygame.image.load('output/screenshot.jpg')
-                    #   my_qr_img = pygame.image.load('output/qr_popimage.jpg')
-                    #   score1_img = pygame.image.load('output/score1.jpg')
-
-                    #   my_person_img = pygame.transform.scale(my_person_img, (int(W/4), int(H/4))
-                    #   my_qr_img = pygame.transform.scale(my_qr_img, (int(W/4), int(H/4)))
-                    #   my_screen_img = pygame.transform.scale(my_screen_img, (int(W/4), int(H/4)))
-                    #   score1_img = pygame.transform.scale(score1_img, (int(W/4), int(H/4)))
-                    #
-                    #   reward_winners = virus_winner
-                    #   winner_mode = True
-                    
-                    
-                        
-                    
                     textSurfaceObj = fontObj.render("Do FIREWORK", True, GREEN)
                     screen.blit(textSurfaceObj, (10,50))
-                    
-
 
                 elif mode == 20:
-        ##            if cam_on :
-        ##                ret, frame = frontcam.read() #배경캡쳐 됨
-        ##                cv2.imshow("screen",frame)
-                    #play_start, score, firework(screen, frame,
-                    #if play_start == False:
-                    #   my_img = upload_img('output/popimage.jpg')
-                    #   my_qr = pygame.image.load('output/qr_popimage.jpg')
-                    #   qr_img = pygame.transform.scale(qr_img, (int(W/4), int(H/4)))
-                    #   winner_mode = True
-                    
-                    textSurfaceObj = fontObj.render("Do VIRUS", True, GREEN)
-                    screen.blit(textSurfaceObj, (10,50))
-
+                    if ret:
+                        virus.virusMain(background_img, frame)
+                        
                 elif mode == 30: #발자국 찍기
                     if play_limit_time < 0:
+
+                        
                         play_start = False
                         reward_start_time = time.time()
                         
                         
-                
-
-
-
-            
+       
         if StoU.poll():
             RECV_MODE = StoU.recv()
             
@@ -283,13 +290,13 @@ def gameScreen(StoU,recvXY):
                 warning_start_time = time.time()
                 
                 ##else: ## 처리해야되나 !?!?!?
-        if warning_start == True:
-            warning_limit_time = WARNING_TIME -int(time.time()-warning_start_time)
-            if warning_limit_time > 0:
-                textSurfaceObj = fontObj.render("Just ONE Person", True, RED, WHITE)
-                screen.blit(textSurfaceObj, (210,400))
-            else:
-                warning_start = False
+##        if warning_start == True:
+##            warning_limit_time = WARNING_TIME -int(time.time()-warning_start_time)
+##            if warning_limit_time > 0:
+##                textSurfaceObj = fontObj.render("Just ONE Person", True, RED, WHITE)
+##                screen.blit(textSurfaceObj, (210,400))
+##            else:
+##                warning_start = False
                     
                 
         pygame.display.flip()  # 화면 전체를 업데이트
