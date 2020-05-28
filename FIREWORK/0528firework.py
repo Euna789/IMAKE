@@ -96,7 +96,7 @@ arc_x = np.where(arc==255)[0]
 arc_y = np.where(arc==255)[1]
 
 ################################CAMERA########################
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_AUTOFOCUS, 0)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH,W)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
