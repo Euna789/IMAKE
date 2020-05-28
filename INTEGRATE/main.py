@@ -3,7 +3,6 @@ import cv2
 from multiprocessing import Process, Queue, Pipe
 from uppercamera import *
 from tempscreen import *
-from piptest import *
 
 def f():
     video = cv2.VideoCapture('video2.mp4')
