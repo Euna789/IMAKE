@@ -21,21 +21,21 @@ def upperCam(UtoS,sendXY):
     valid_circle = 0
     
     Sleep = True
-    frontcam = cv2.VideoCapture(1)
-    frontcam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
-    frontcam.set(cv2.CAP_PROP_FRAME_WIDTH,W)
-    frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
+##    frontcam = cv2.VideoCapture(1)
+##    frontcam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
+##    frontcam.set(cv2.CAP_PROP_FRAME_WIDTH,W)
+##    frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
     
-##    video = cv2.VideoCapture('6.mp4')
+    video = cv2.VideoCapture('6.mp4')
     while True:
         ret, orig_frame = frontcam.read()
-##        ret, orig_frame = video.read()
-##        if not ret:
-##            video = cv2.VideoCapture('video2.mp4')
-##            continue
+        ret, orig_frame = video.read()
         if not ret:
+            video = cv2.VideoCapture('6.mp4')
             continue
-        orig_frame = cv2.resize(orig_frame, display)
+##        if not ret:
+##            continue
+##        orig_frame = cv2.resize(orig_frame, display)
 
         gray = cv2.cvtColor(orig_frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.medianBlur(gray,5)
