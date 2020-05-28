@@ -124,17 +124,24 @@ def gameScreen(StoU,recvXY):
             
             select_limit_time = SELECT_TIME -int(time.time()-select_start_time)
             if select_limit_time < 0:
-                if center[0] <int((W-innerW)/2)+innerW/2:
+                if center[0] <int((W-innerW)/2)+innerW/3:
                     textSurfaceObj = fontObjBig.render("Let's start FIREWORK", True, WHITE)
                     screen.blit(textSurfaceObj, (10,70))
                     mode = 10 # [ FIREWORK ]
+                    winner_mode = 10
                     
                     
+                elif center[0] <int((W-innerW)/2)+innerW/3*2:
+                    textSurfaceObj = fontObjBig.render("Let's start DRAWING", True, WHITE)
+                    screen.blit(textSurfaceObj, (10,70))
+                    mode = 30 # [ DRAWING ]
+                    winner_mode = 30
                 else:
                     virus = funcVirus.VirusFunc(screen)
                     textSurfaceObj = fontObjBig.render("Let's start VIRUS", True, WHITE)
                     screen.blit(textSurfaceObj, (50,70))
-                    mode = 20 # VIRUS
+                    mode = 20 # [ VIRUS ]
+                    winner_mode = 20
                 
                 pygame.display.flip()  # 화면 전체를 업데이트
                 clock.tick(TARGET_FPS)
@@ -147,15 +154,17 @@ def gameScreen(StoU,recvXY):
                 textSurfaceObj = fontObj.render("SELECT TIME:"+str(select_limit_time), True, GREEN)
                 screen.blit(textSurfaceObj, (10,10))
                 
-                pygame.draw.rect(screen, RED, [int((W-innerW)/2), H-innerH,innerW/2, H],2) #x,y,w,h [FIREWORK]
-                pygame.draw.rect(screen, GREEN, [int((W-innerW)/2)+innerW/2, H-innerH, innerW/2, H],2) # [VIRUS]
-
-                if center[0] <int((W-innerW)/2)+innerW/2:
-                     pygame.draw.rect(screen, WHITE, [int((W-innerW)/2), H-innerH,innerW/2, H],5) #x,y,w,h [FIREWORK]
+                pygame.draw.rect(screen, RED, [int((W-innerW)/2), H-innerH,innerW/3, H],2) #x,y,w,h [FIREWORK]
+                pygame.draw.rect(screen, PINK, [int((W-innerW)/2)+innerW/3, H-innerH, innerW/3, H],2) # [DRAWING]
+                pygame.draw.rect(screen, GREEN, [int((W-innerW)/2)+innerW/3*2, H-innerH, innerW/3, H],2) # [VIRUS]
+            
+                if center[0] <int((W-innerW)/2)+innerW/3:
+                    pygame.draw.rect(screen, WHITE, [int((W-innerW)/2), H-innerH,innerW/3, H],5) #x,y,w,h [FIREWORK]
                     
-                    
-                else:
-                    pygame.draw.rect(screen, WHITE, [int((W-innerW)/2)+innerW/2, H-innerH, innerW/2, H],5) # [VIRUS]
+                elif int((W-innerW)/2)+innerW/3 <= center[0] <int((W-innerW)/2)+innerW/3*2:
+                    pygame.draw.rect(screen, WHITE, [int((W-innerW)/2)+innerW/3, H-innerH, innerW/3, H],5) # [DRAWING]
+                elif int((W-innerW)/2)+innerW/3*2 <= center[0] < int((W-innerW)/2)+innerW:
+                    pygame.draw.rect(screen, WHITE, [int((W-innerW)/2)+innerW/3*2, H-innerH, innerW/3, H],5) # [VIRUS]
                     
                 pygame.draw.circle(screen, (255,255,255), center,15,0)
                 
@@ -170,6 +179,30 @@ def gameScreen(StoU,recvXY):
                 select_start = False
 
             else:
+                if winner_mode == 10:
+                    textSurfaceObj = fontObj.render("FIRE REWARD TIME:"+str(reward_limit_time), True, GREEN)
+                    screen.blit(textSurfaceObj, (10,400))
+                    
+                elif winner_mode == 20:
+                    textSurfaceObj = fontObj.render("VIRUS REWARD TIME:"+str(reward_limit_time), True, GREEN)
+                    screen.blit(textSurfaceObj, (10,400))
+
+                elif winner_mode == 30:
+                    textSurfaceObj = fontObj.render("DRAWING REWARD TIME:"+str(reward_limit_time), True, GREEN)
+                    screen.blit(textSurfaceObj, (10,400))
+                                        
+                textSurfaceObj = fontObj.render("REWARD TIME:"+str(reward_limit_time), True, GREEN)
+                screen.blit(textSurfaceObj, (10,440))
+                
+        else:   #[컨텐츠 실행 처리]
+            play_limit_time = PLAY_TIME -int(time.time()-play_start_time)
+            ret, frame = frontcam.read()
+            
+            if play_limit_time < 0: #리워드로 넘어가야됨 -----> 수정) Play_start == False
+                play_start = False
+                mode = 2
+                reward_start_time = time.time()
+
                 if winner_mode == 1:
                     my_person_img = upload_img('./firework_imgs/output/popimage.jpg') ##
                     my_screen_img = pygame.image.load('./firework_imgs/output/screenshot.jpg')
@@ -215,22 +248,7 @@ def gameScreen(StoU,recvXY):
                     screen.blit(my_screen_img, (5,H/2))
                     screen.blit(my_qr_img, (W/2-W/8, H/2))
                     screen.blit(my_person_img, (W-W/4-5, H/2))
-
-                elif winner_mode == 3:
-                    textSurfaceObj = fontObj.render("REWARD TIME:"+str(reward_limit_time), True, GREEN)
-                    screen.blit(textSurfaceObj, (10,400))
-                                        
-                textSurfaceObj = fontObj.render("REWARD TIME:"+str(reward_limit_time), True, GREEN)
-                screen.blit(textSurfaceObj, (10,400))
                 
-        else:   #[컨텐츠 실행 처리]
-            play_limit_time = PLAY_TIME -int(time.time()-play_start_time)
-            ret, frame = frontcam.read()
-            
-            if play_limit_time < 0: #리워드로 넘어가야됨 -----> 수정) Play_start == False
-                play_start = False
-                mode = 2
-                reward_start_time = time.time()     
                 
             else:
                 textSurfaceObj = fontObj.render("PLAY TIME:"+str(play_limit_time), True, GREEN)
@@ -244,11 +262,8 @@ def gameScreen(StoU,recvXY):
                         virus.virusMain(background_img, frame)
                         
                 elif mode == 30: #발자국 찍기
-                    if play_limit_time < 0:
-
-                        
-                        play_start = False
-                        reward_start_time = time.time()
+                    textSurfaceObj = fontObj.render("Do DRAWING", True, GREEN)
+                    screen.blit(textSurfaceObj, (10,50))
                         
                         
        
