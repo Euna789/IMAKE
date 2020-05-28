@@ -1,0 +1,16 @@
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8">
+	<title>write</title>
+</head>
+<body>
+	<ul>
+	<li>  프로그램 정보 | 사용자 정보 | 날짜  </li>
+	
+	{% for article in articleList %}
+		<li><a href='/view/{{article.id}}'>{{article.program_info}}</a> | {{article.user_info}} | {{article.cdate|date:"D d M Y"}}</li>
+	{% endfor %}
+        
+	</ul>
+</body>
+</html>

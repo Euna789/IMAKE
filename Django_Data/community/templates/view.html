@@ -1,0 +1,33 @@
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8">
+	<title>IMAKE 사용 조회!</title>
+</head>
+<body>
+	프로그램 이름 : {{article.program_info}}
+	<br>
+	플레이 정보 : {{article.user_info}}
+	<br>    
+    {% if article.user_img %}
+    <!-- path :{{ article.img.path }} 
+	<br>
+    url : {{MEDIA_URL}}{{ article.img.url }}  -->
+	<p>내가 플레이 하는 모습!
+	<br>
+	<img src="http://10.200.37.130:8000/media/{{article.user_img.url}}" alt="">
+	<br>
+	<a id='img_download' href = "http://10.200.37.130:8000/media/{{article.user_img.url}}" download>이 사진 다운받기</a>
+	</p>
+
+	{% endif %}
+	
+	{% if article.content_img %}
+	<p> 컴퓨터 속의 나!
+	<br>
+	<img src="http://10.200.37.130:8000/media/{{article.content_img.url}}" alt="">
+	<br>
+	<a id='img_download' href = "http://10.200.37.130:8000/media/{{article.content_img.url}}" download>이 사진 다운받기</a>
+	</p>
+	{% endif %}
+</body>
+</html>
