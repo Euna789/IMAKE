@@ -74,6 +74,16 @@ def gameScreen(StoU,recvXY):
     warning_start = False
     play_start = False
     reward_start = False
+
+    frontcam = cv2.VideoCapture(0)
+    frontcam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
+    frontcam.set(cv2.CAP_PROP_FRAME_WIDTH,W)
+    frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
+    ret, frame = frontcam.read()
+
+    background_img = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+    background_img = cv2.GaussianBlur(background_img, (5,5),255)
+    cam_on = True
     
     while True:
         COUNT +=1
@@ -153,7 +163,7 @@ def gameScreen(StoU,recvXY):
                 
         else:   #[컨텐츠 실행 처리]
             play_limit_time = PLAY_TIME -int(time.time()-play_start_time)
-            if play_limit_time < 0: #리워드로 넘어가야됨
+            if play_limit_time < 0: #리워드로 넘어가야됨 -----> 수정) Play_start == False
                 play_start = False
                 mode = 2
                 reward_start_time = time.time()
@@ -166,6 +176,7 @@ def gameScreen(StoU,recvXY):
         ##            if cam_on :
         ##                ret, frame = frontcam.read() #배경캡쳐 됨
         ##                cv2.imshow("screen",frame)
+                    firework(screen, frame, 
                     
                     textSurfaceObj = fontObj.render("Do FIREWORK", True, GREEN)
                     screen.blit(textSurfaceObj, (10,50))
@@ -179,7 +190,13 @@ def gameScreen(StoU,recvXY):
                     
                     textSurfaceObj = fontObj.render("Do VIRUS", True, GREEN)
                     screen.blit(textSurfaceObj, (10,50))
-                    
+
+                elif mode == 30: #발자국 찍기
+                    if play_limit_time < 0:
+                        play_start = False
+                        reward_start_time = time.time()
+                        
+                        
                 
 
 
