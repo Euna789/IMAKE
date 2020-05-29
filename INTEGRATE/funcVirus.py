@@ -103,8 +103,6 @@ class VirusFunc:
     H= 480
     display = (W, H)
 
-    loop = True
-
     pygame.init()
     pygame.mixer.init()
 
