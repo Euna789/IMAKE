@@ -33,7 +33,7 @@ class Virus:
     def __init__ (self, screen):
         self.x = randint(50,W-50)
         self.y = randint(50,H-50)
-        self.effect = pygame.mixer.Sound("gig.wav")
+        self.effect = pygame.mixer.Sound("./virus_imgs/gig.wav")
         self.effect.set_volume(1)   #set volume(value) or set_volume(left, right)
         self.effect.play(1)
 
@@ -240,5 +240,5 @@ class VirusFunc:
 
     #------------------------------- time out----------------------------
         
-        pygame.image.save(self.screen,"output/screenshot.jpg")
+        pygame.image.save(self.screen,"./virus_imgs/output/screenshot.jpg")
         cv2.imwrite('output/popimage.jpg', frame)

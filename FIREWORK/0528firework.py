@@ -172,6 +172,8 @@ while loop == True:
     temp = np.rot90(thresh_img)        
     mask = np.flipud(temp)
     me = pygame.surfarray.make_surface(mask).convert()
+
+    print(mask)
     me.set_alpha(100)
 
     if firetype.p_fw % 10 == 0 and not reward:

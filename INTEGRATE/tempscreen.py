@@ -11,7 +11,8 @@ import math
 import cv2
 import numpy as np
 import funcVirus
-
+import funcFirework
+import funcDrawing
 '''
 mode
 0 == SLEEP_MODE
@@ -62,13 +63,6 @@ def gameScreen(StoU,recvXY):
     fontObjBig = pygame.font.Font('C:\Windows\Fonts\Arial.ttf', 70)  
 
 
-##    frontcam = cv2.VideoCapture(0)
-##    frontcam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
-##    frontcam.set(cv2.CAP_PROP_FRAME_WIDTH,W)
-##    frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
-##    fgbg = cv2.createBackgroundSubtractorMOG2(varThreshold=200, detectShadows=False)
-##    
-
     runned = False
     thresh_done=False
     center = (0,0)
@@ -113,12 +107,7 @@ def gameScreen(StoU,recvXY):
                 frontcam.release()
                 print("relased")
                 cam_on = False
-        
-##        StoU.send("WHICH_CONTENT?")
-##        if COUNT ==100:
-##            RECV_MODE = "SLEEP_MODE"
-##            sleep_start_time = time.time()
-##            mode = 0
+
             
         elif mode == 1:
             
@@ -127,21 +116,29 @@ def gameScreen(StoU,recvXY):
                 if center[0] <int((W-innerW)/2)+innerW/3:
                     textSurfaceObj = fontObjBig.render("Let's start FIREWORK", True, WHITE)
                     screen.blit(textSurfaceObj, (10,70))
+
+                    firework = funcFirework.FireFunc(screen)
                     mode = 10 # [ FIREWORK ]
                     winner_mode = 10
-                    
                     
                 elif center[0] <int((W-innerW)/2)+innerW/3*2:
                     textSurfaceObj = fontObjBig.render("Let's start DRAWING", True, WHITE)
                     screen.blit(textSurfaceObj, (10,70))
+
+                    drawing = funcDrawing.Drawing(screen)
                     mode = 30 # [ DRAWING ]
                     winner_mode = 30
-                else:
-                    virus = funcVirus.VirusFunc(screen)
+                    
+                else:                    
                     textSurfaceObj = fontObjBig.render("Let's start VIRUS", True, WHITE)
                     screen.blit(textSurfaceObj, (50,70))
-                    mode = 20 # [ VIRUS ]
-                    winner_mode = 20
+
+##                    virus = funcVirus.VirusFunc(screen)
+##                    mode = 20 # [ VIRUS ]
+##                    winner_mode = 20
+                    firework = funcFirework.FireFunc(screen)
+                    mode = 10 # [ FIREWORK ]
+                    winner_mode = 10
                 
                 pygame.display.flip()  # 화면 전체를 업데이트
                 clock.tick(TARGET_FPS)
@@ -254,14 +251,16 @@ def gameScreen(StoU,recvXY):
                 textSurfaceObj = fontObj.render("PLAY TIME:"+str(play_limit_time), True, GREEN)
                 screen.blit(textSurfaceObj, (100,10))
                 if mode == 10:
-                    textSurfaceObj = fontObj.render("Do FIREWORK", True, GREEN)
-                    screen.blit(textSurfaceObj, (10,50))
+                    if ret:
+                        firework.fireMain(background_img, frame)
 
                 elif mode == 20:
                     if ret:
                         virus.virusMain(background_img, frame)
                         
                 elif mode == 30: #발자국 찍기
+                    if ret:
+                        drawing.drawingMain(center,frame) 
                     textSurfaceObj = fontObj.render("Do DRAWING", True, GREEN)
                     screen.blit(textSurfaceObj, (10,50))
                         

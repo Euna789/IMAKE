@@ -131,7 +131,7 @@ class Drawing:
 
 
 
-    def drawingMain(self, center):
+    def drawingMain(self, center, img):
         self.clock.tick(10)
 
         for event in pygame.event.get(): 
@@ -346,8 +346,8 @@ class Drawing:
 
         if len(self.mousepos) > self.highest_len:
             self.highest_len = len(self.mousepos)
-            cv.imwrite('output/popimage.jpg', img)
-            pygame.image.save(self.screen,"output/screenshot.jpg")
+            cv.imwrite('./drawing_imgs/output/popimage.jpg', img)
+            pygame.image.save(self.screen,"./drawing_imgs/output/screenshot.jpg")
             
 
         #guide window blit

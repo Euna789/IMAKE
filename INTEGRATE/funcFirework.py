@@ -107,6 +107,7 @@ class FireFunc:
         
         temp = np.rot90(thresh_img)        
         mask = np.flipud(temp)
+        print(mask)
         me = pygame.surfarray.make_surface(mask).convert()
         me.set_alpha(100)
 
