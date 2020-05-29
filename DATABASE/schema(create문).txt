@@ -1,7 +1,9 @@
 CREATE TABLE program (
 id integer primary key autoincrement,
 name text not null);
+
 CREATE TABLE sqlite_sequence(name,seq);
+
 CREATE TABLE winner(program_id integer, rank integer, user_id integer, score integer default 0);
 CREATE TABLE program_info(program_id integer, date timestring, used_time integer, num_users integer);
 CREATE TABLE user(user_id integer primary key autoincrement, program_id integer, score integer, date timestring);

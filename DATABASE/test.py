@@ -1,20 +1,22 @@
-import dbManager as db
+from dbManager import *
+import pymysql
+from datetime import datetime
 
-db.init_program_info()
 
-gametype=3
+init_program_info()
+
+game_type=3
 
 time=777
 
-num_user=1
+new_user=1
 
 score=150
 
 img_url="new6"
 
-db.addTime(gametype, time)
+addInfos(gametype, time, num_user)
 
-db.addNumUser(gametype,num_user)
+addScore(game_type, score, img_url)
 
-db.addScore(gametype, score, img_url)
 

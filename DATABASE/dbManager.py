@@ -1,61 +1,117 @@
-import sqlite3
 from datetime import datetime
+import pymysql
+
+host = "10.200.37.130"   # ip address of server
 
 def init_program_info():
-    con=sqlite3.connect("test.db")
-    cur=con.cursor()
+
+    host = "192.168.0.6"
+    user = "user"
+    password = "1234"
+    db = "imake"
+
+    con = pymysql.connect(host, user, password, db, port=3307)
+    cur = con.cursor()
+
     #현재 날짜 program_info가 있는지 확인
-    sql="select exists(select * from program_info where date=?)"
-    cur.execute(sql,(datetime.today().strftime("%Y-%m-%d"),))
-    row=cur.fetchone()
-    if row[0]==0:
-        for i in range(1,4):
-            sql="insert into program_info values (?,?,0,0)"
-            cur.execute(sql,(i,datetime.today().strftime("%Y-%m-%d"),))
+    for i in range(1,4):
+        sql = "select exists(select * from community_program_info where date=CURDATE() and program_id = "+str(i)+")"
+        cur.execute(sql)
+        row = cur.fetchone()
+        if row[0] == 0:
+            sql = "insert into community_program_info(program_id, date, used_time, num_users) values("+str(i)+",CURDATE(),0,0)"
+            cur.execute(sql)
+            
     con.commit()
     con.close()
     
+def addInfos(game_type, time, new_user):
+    
+    host = "192.168.0.6"
+    user = "user"
+    password = "1234"
+    db = "imake"
 
-def addTime(game_type,time):
-    con = sqlite3.connect("test.db")
-    cur=con.cursor()
+    con = pymysql.connect(host, user, password, db, port=3307)
+    cur = con.cursor()
 
-    #db에 있는 현재 시간을 가져옴
-    sql1="select used_time from program_info where program_id=? and date=?"
-    cur.execute(sql1,(game_type,datetime.today().strftime("%Y-%m-%d"),))
-    con.commit()
+    sql1="select num_users, used_time from community_program_info where program_id="+str(game_type)+" and date=CURDATE()"
+    cur.execute(sql1)
     row=cur.fetchone()
 
-    #사용시간을 더해 db에 업데이트한다
-    sql2="update program_info set used_time=? where program_id=? and date=?"
-    cur.execute(sql2,(row[0]+time,game_type,datetime.today().strftime("%Y-%m-%d"),))
+    if len(row)==2:
+        sql = "update community_program_info set num_users = num_users + "+str(new_user)+", used_time = used_time + "+str(time)+" where (program_id="+str(game_type)+" and date=CURDATE())"
+    else:
+        sql = "insert into community_program_info (used_time, program_id, date, num_users) values ("+str(time)+", "+str(game_type)+", CURDATE(),"+str(new_user)+")"
+        
+    cur.execute(sql)
+    
     con.commit()
     con.close()
-
-
-def addNumUser(game_type,user):
-    con=sqlite3.connect("test.db")
-    cur=con.cursor()
-
-    #db에 있는 현재 총 사용자수를 가져옴
-    sql1="select num_users from program_info where program_id=? and date=?"
-    cur.execute(sql1,(game_type,datetime.today().strftime("%Y-%m-%d"),))
-    row=cur.fetchone()
-
-    #사용자 수를 더해 db에 업데이트한다
-    sql2="update program_info set num_users=? where program_id=? and date=?"
-    cur.execute(sql2,(row[0]+user,game_type,datetime.today().strftime("%Y-%m-%d"),))
-    con.commit()
-    con.close()
+    
+    
 
 def addScore(game_type, score, url):
-    con=sqlite3.connect("test.db")
-    cur=con.cursor()
+    
+    host = "192.168.0.6"
+    user = "user"
+    password = "1234"
+    db = "imake"
+     
+    con = pymysql.connect(host, user, password, db, port=3307)
+    cur = con.cursor()
 
     #사용자 추가
-    sql1="insert into user (program_id, score,date) values (?,?,?)"
-    cur.execute(sql1,(game_type,score,datetime.today().strftime("%Y-%m-%d"),))
+    sql1="insert into community_user (program_id, score, date) values ("+str(game_type)+","+str(score)+",NOW())"
+    cur.execute(sql1)
     con.commit()
     con.close()
     
 
+
+##def addTime(game_type,time):
+##    
+##    host = "192.168.0.6"
+##    user = "user"
+##    password = "1234"
+##    db = "imake"
+##    
+##    con = pymysql.connect(host, user, password, db, port=3307)
+##    cur = con.cursor()
+##
+##    #db에 있는 현재 시간을 가져옴
+##    sql = "insert into community_program_info (used_time, program_id, date) values ("+str(time)+", "+str(game_type)+", CURDATE()) on duplicate KEY UPDATE used_time = used_time + "+str(time)
+##    cur.execute(sql)
+####    sql1="select used_time from community_program_info where program_id="+str(game_type)+" and date=CURDATE()"
+####    cur.execute(sql1)
+######    con.commit()
+####    
+####    row=cur.fetchone()
+####
+####    #사용시간을 더해 db에 업데이트한다
+####    sql2="update community_program_info set used_time="+str(row[0]+time)+" where program_id="+str(game_type)+" and date=CURDATE()"
+####    cur.execute(sql2)
+##    con.commit()
+##    con.close()
+##
+##
+##def addNumUser(game_type,new_user):
+##    
+##    host = "192.168.0.6"
+##    user = "user"
+##    password = "1234"
+##    db = "imake"
+##    
+##    con = pymysql.connect(host, user, password, db, port=3307)
+##    cur = con.cursor()
+##
+##    #db에 있는 현재 총 사용자수를 가져옴
+##    sql1="select num_users from community_program_info where program_id="+str(game_type)+" and date=CURDATE()"
+##    cur.execute(sql1)
+##    row=cur.fetchone()
+##
+##    #사용자 수를 더해 db에 업데이트한다
+##    sql2="update community_program_info set num_users="+ str(row[0]+new_user)+" where program_id="+str(game_type)+" and date=CURDATE()"
+##    cur.execute(sql2)
+##    con.commit()
+##    con.close()
