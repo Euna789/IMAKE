@@ -131,7 +131,7 @@ class Drawing:
 
 
 
-    def drawingMain(self, img):
+    def drawingMain(self, center):
         self.clock.tick(10)
 
         for event in pygame.event.get(): 
@@ -157,8 +157,7 @@ class Drawing:
 ##        if ret == False:
 ##            continue
 
-        img = cv.resize(img, (640,480))
-        points = detect.hough_detect(img)
+        points = center
         
         #cv.imshow('result', img)
         # if person head is found
