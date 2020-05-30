@@ -575,7 +575,7 @@ class Fire_type7:
         self.y += self.vy
         
         if self.count > 0 and self.count % 4 == 0:
-            print("make",self.count)
+            #print("make",self.count)
             self.makeSparkle()
         
         return (self.count==51) #boolean ; 카운트 51되면 true

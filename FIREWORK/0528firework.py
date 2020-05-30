@@ -13,6 +13,8 @@ import firetype
 #from firetypeSP import Particle, Sparker
 
 #색 정의
+BLACK_FADED = [0, 0, 0, 1]
+
 BLACK= (0,0,0) #R G B
 RED = (255, 0, 0)
 GREEN = (255,0, 255)
@@ -95,6 +97,10 @@ arc = cv2.Canny(src, 40, 45)
 arc_x = np.where(arc==255)[0]
 arc_y = np.where(arc==255)[1]
 
+# every frame blit a low alpha black surf so that all effects fade out slowly
+blackSurf = pygame.Surface((W, H)).convert_alpha()
+blackSurf.fill(BLACK_FADED)
+
 ################################CAMERA########################
 cap = cv2.VideoCapture(0)
 cap.set(cv2.CAP_PROP_AUTOFOCUS, 0)
@@ -167,17 +173,19 @@ while loop == True:
     temp = np.flipud(temp)
     exists = np.where(temp == 255)
 
-    screen.fill(BLACK)  # 화면을 검은색으로 지운다
+    #screen.fill(BLACK)  # 화면을 검은색으로 지운다
+    screen.blit(blackSurf, (0,0))  # 블랙으로 리셋
+
     
     temp = np.rot90(thresh_img)        
     mask = np.flipud(temp)
     me = pygame.surfarray.make_surface(mask).convert()
 
-    print(mask)
+    #print(mask)
     me.set_alpha(100)
 
     if firetype.p_fw % 10 == 0 and not reward:
-        print(firetype.p_fw)
+        #print(firetype.p_fw)
         fires.append(firetype.Fire_type7(W/2, H/2, screen)) #init <-- x,y,qty
         reward = True
     
