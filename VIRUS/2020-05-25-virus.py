@@ -39,7 +39,7 @@ def timer(count):
     tic = threading.Timer(1,timer,args=[count])
     tic.start()
 
-    if count == 5:
+    if count == 50:
         print("timer end")
         global loop
         loop = False
@@ -63,7 +63,7 @@ end_png = pygame.image.load('end.png')
 TARGET_FPS = 60
 clock = pygame.time.Clock()
 
-screen = pygame.display.set_mode(display, pygame.DOUBLEBUF )
+screen = pygame.display.set_mode(display, pygame.FULLSCREEN )
 
 pygame.init()
 pygame.mixer.init()

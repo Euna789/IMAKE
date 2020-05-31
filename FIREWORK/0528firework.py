@@ -71,10 +71,10 @@ TARGET_FPS = 60
 clock = pygame.time.Clock()
 
 display = (W, H)
-screen = pygame.display.set_mode(display, DOUBLEBUF)
+screen = pygame.display.set_mode(display, FULLSCREEN)
 
 fires = []
-reward = False
+reward = True
 pygame.init()
 pygame.mixer.init()
 num = 0
@@ -162,7 +162,7 @@ while loop == True:
     this_img = cv2.GaussianBlur(this_img, (5,5),0)      
     abdiff = cv2.absdiff(this_img, background_img)
 
-    _, thresh_img = cv2.threshold(abdiff, 35, 255, cv2.THRESH_BINARY)
+    _, thresh_img = cv2.threshold(abdiff, 41, 255, cv2.THRESH_BINARY)
     
     kernel2 = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
     opening = cv2.morphologyEx(thresh_img, cv2.MORPH_OPEN, kernel2, 3)
@@ -184,7 +184,7 @@ while loop == True:
     #print(mask)
     me.set_alpha(100)
 
-    if firetype.p_fw % 10 == 0 and not reward:
+    if firetype.p_fw != 0 and firetype.p_fw % 10 == 0 and not reward:
         #print(firetype.p_fw)
         fires.append(firetype.Fire_type7(W/2, H/2, screen)) #init <-- x,y,qty
         reward = True
