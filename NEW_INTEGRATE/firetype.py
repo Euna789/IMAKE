@@ -91,6 +91,10 @@ class Fire_type1:
 
         self.screen = screen
         self.photo = False
+
+        self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
+        self.effect.set_volume(1)
+        self.effect.play(1)
        
     def makeoutter(self):
         for i in range (randint(50,200)):
@@ -126,6 +130,9 @@ class Fire_type1:
                 self.x = self.ray.dest_x
                 self.y = self.ray.dest_y
                 self.makeoutter()
+                self.effect = pygame.mixer.Sound("./firework_imgs/splash.wav")
+                self.effect.set_volume(0.7)
+                self.effect.play(1)
 
             else: #바깥쪽 폭죽 생성 후
                 self.draw()
@@ -165,6 +172,10 @@ class Fire_type2:
         self.screen = screen
         self.photo = False
        
+        self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
+        self.effect.set_volume(1)
+        self.effect.play(1)
+        
     def makeoutter(self):
         for i in range (randint(50,200)):
             r = uniform(0, 2*math.pi) #float
@@ -198,6 +209,9 @@ class Fire_type2:
                 self.x = self.ray.dest_x
                 self.y = self.ray.dest_y
                 self.makeoutter()
+                self.effect = pygame.mixer.Sound("./firework_imgs/splash.wav")
+                self.effect.set_volume(0.7)
+                self.effect.play(1)
 
             else: #바깥쪽 폭죽 생성 후
                 self.draw()
@@ -238,6 +252,10 @@ class Fire_type3:
         self.screen = screen
         self.photo = False
        
+        self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
+        self.effect.set_volume(1)
+        self.effect.play(1)
+        
     def makeoutter(self):
         for i in range (randint(50,200)):
             r = uniform(0, 2*math.pi) #float
@@ -274,6 +292,9 @@ class Fire_type3:
                 self.makeoutter()
                 self.color = (randint(50,255),randint(50,255), randint(50,255))
                 
+                self.effect = pygame.mixer.Sound("./firework_imgs/splash.wav")
+                self.effect.set_volume(0.7)
+                self.effect.play(1)
 
             else: #바깥쪽 폭죽 생성 후
                 self.draw(mouse)
@@ -313,6 +334,10 @@ class Fire_type4:
         self.screen = screen
         self.photo = False
        
+        self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
+        self.effect.set_volume(1)
+        self.effect.play(1)
+        
     def makeoutter(self):
         for i in range (randint(50,200)):
             r = uniform(0, 2*math.pi) #float
@@ -346,6 +371,9 @@ class Fire_type4:
                 self.makeoutter()
                 self.color = (randint(100,255),randint(100,255),randint(100,255))
                 self.makeinner()
+                self.effect = pygame.mixer.Sound("./firework_imgs/splash.wav")
+                self.effect.set_volume(0.7)
+                self.effect.play(1)
             else: #바깥쪽 폭죽 생성 후
                 self.draw()
             self.count += 1
@@ -380,6 +408,10 @@ class Fire_type5:
         self.screen = screen
         self.photo = False
        
+        self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
+        self.effect.set_volume(1)
+        self.effect.play(1)
+        
     def makeoutter(self):
         for i in range (randint(50,200)):
             r = uniform(0, 2*math.pi) #float
@@ -413,6 +445,9 @@ class Fire_type5:
                 self.x = self.ray.dest_x
                 self.y = self.ray.dest_y
                 self.makeoutter()
+                self.effect = pygame.mixer.Sound("./firework_imgs/splash.wav")
+                self.effect.set_volume(0.7)
+                self.effect.play(1)
 
             else: #바깥쪽 폭죽 생성 후
                 self.draw()
@@ -452,7 +487,11 @@ class Fire_type6:
 
         self.screen = screen
         self.photo = False
-       
+
+        self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
+        self.effect.set_volume(1)
+        self.effect.play(1)
+        
     def makeoutter(self):
         for i in range (randint(200,500)):
             r = uniform(0, 2*math.pi) #float
@@ -474,6 +513,9 @@ class Fire_type6:
                     highest_y = self.y
                     self.photo = True
                 self.makeoutter()
+                self.effect = pygame.mixer.Sound("./firework_imgs/splash.wav")
+                self.effect.set_volume(0.7)
+                self.effect.play(1)
 
             else: #바깥쪽 폭죽 생성 후
                 self.draw()
@@ -516,6 +558,10 @@ class Fire_type7:
         self.mask = np.zeros(shape = (H,W))
         self.mask[80][int(W/2)] = 255
        
+        self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
+        self.effect.set_volume(1)
+        self.effect.play(1)
+        
     def makeoutter(self):
         for i in range (randint(100,250)):
             r = uniform(0, 2*math.pi) #float
@@ -567,6 +613,9 @@ class Fire_type7:
                 self.makeoutter()
                 self.makeinner()
                 self.backSparkle()
+                self.effect = pygame.mixer.Sound("./firework_imgs/splash.wav")
+                self.effect.set_volume(0.7)
+                self.effect.play(1)
 
             else: #바깥쪽 폭죽 생성 후
                 self.draw()
