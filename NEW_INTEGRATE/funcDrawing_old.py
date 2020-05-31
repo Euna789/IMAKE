@@ -45,37 +45,35 @@ class Drawing:
         self.blit_alpha(self.screen,animal, XY,opacity)
 
 
-
-    broom_flag=0
+    flag=1
 
     # PAINT IMG
-    guide1=imgLoad1('guide_1')
-    guide2=imgLoad1('guide_2')
+    guide1=pygame.transform.scale(imgLoad1('guide_1'),(500,120))
+    guide2=pygame.transform.scale(imgLoad1('guide_2'),(500,120))
 
-    broom_1=imgLoad1('broom1')
-    broom_2=imgLoad1('broom2')
+    paints_size=80
+    paints_y=pygame.transform.scale(imgLoad1('paints_y'),(paints_size,paints_size))
+    paints_g=pygame.transform.scale(imgLoad1('paints_g'),(paints_size,paints_size))
+    paints_s=pygame.transform.scale(imgLoad1('paints_s'),(paints_size,paints_size))
+    paints_p=pygame.transform.scale(imgLoad1('paints_p'),(paints_size,paints_size))
+    broom_1=pygame.transform.scale(imgLoad1('broom1'),(67,116))
+    broom_2=pygame.transform.scale(imgLoad1('broom2'),(89,143))
 
-    paints_size=60
-    
-    bucket_y_img=imgLoad1('bucket_y')
-    bucket_g_img=imgLoad1('bucket_g')
-    bucket_p_img=imgLoad1('bucket_p')
-    bucket_s_img=imgLoad1('bucket_s')
-    bucket_y_3=imgLoad1('bucket_y_3')
-    bucket_g_3=imgLoad1('bucket_g_3')
-    bucket_p_3=imgLoad1('bucket_p_3')
-    bucket_s_3=imgLoad1('bucket_s_3')
+    bucket_y_img=pygame.transform.scale(imgLoad1('bucket_y'),(paints_size,paints_size))
+    bucket_g_img=pygame.transform.scale(imgLoad1('bucket_g'),(paints_size,paints_size))
+    bucket_p_img=pygame.transform.scale(imgLoad1('bucket_p'),(paints_size,paints_size))
+    bucket_s_img=pygame.transform.scale(imgLoad1('bucket_s'),(paints_size,paints_size))
+    bucket_y_3=pygame.transform.scale(imgLoad1('bucket_y_3'),(147,paints_size))
+    bucket_g_3=pygame.transform.scale(imgLoad1('bucket_g_3'),(147,paints_size))
+    bucket_p_3=pygame.transform.scale(imgLoad1('bucket_p_3'),(147,paints_size))
+    bucket_s_3=pygame.transform.scale(imgLoad1('bucket_s_3'),(147,paints_size))
 
-    bucket_y_2=imgLoad1('bucket_y_2')
-    bucket_g_2=imgLoad1('bucket_g_2')
-    bucket_p_2=imgLoad1('bucket_p_2')
-    bucket_s_2=imgLoad1('bucket_s_2')
+    bucket_y_2=pygame.transform.scale(imgLoad1('bucket_y_2'),(paints_size,paints_size))
+    bucket_g_2=pygame.transform.scale(imgLoad1('bucket_g_2'),(paints_size,paints_size))
+    bucket_p_2=pygame.transform.scale(imgLoad1('bucket_p_2'),(paints_size,paints_size))
+    bucket_s_2=pygame.transform.scale(imgLoad1('bucket_s_2'),(paints_size,paints_size))
 
-    horse_face=imgLoad1('horse_face')
-    bird_face=imgLoad1('bird_face')
-    cat_face=imgLoad1('cat_face')
-    
-    animal_init = ['cat','horse', 'bird']
+    animal_init = ['horse','bird', 'cat']
     animal_flag = 0
 
     mousepos=[]
@@ -118,7 +116,7 @@ class Drawing:
     skyblue=(450,300)
     pink=(650,300)
     bucket_p=(580,300)
-    broom=(580,100)
+    broom=(750,100)
 
     distance=40
 
@@ -128,6 +126,8 @@ class Drawing:
 
     X=0
     Y=0
+    X2=0
+    Y2=0
 
 
 
@@ -141,10 +141,17 @@ class Drawing:
             if event.type == pygame.QUIT:  
                 done = True
                 
-
+            #마우스 클릭시 동물이 바뀜
+            elif event.type== pygame.MOUSEBUTTONDOWN:
+                if self.animal_now=='horse':
+                    self.animal_now='cat'
+                elif self.animal_now=='cat':
+                    self.animal_now='bird'
+                elif self.animal_now=='bird':
+                    self.animal_now='horse'
         
         self.screen.fill((0,0,0))
-        self.screen.blit(pygame.image.load('./drawing_imgs/sprites/background.png'),(0,0))
+        self.screen.blit(pygame.image.load('./drawing_imgs/sprites/background.jpg'),(0,0))
         
         self.pos_prev = self.pos_now
         # get hand point from video
@@ -161,47 +168,39 @@ class Drawing:
             self.pos_now = (points[0]*1.3-60, points[1]*1.3-60)
 
         # if user goes out of the screen, change animal
-        if not(0 < self.pos_now[0] < 640 and 0 < self.pos_now[1] < 480) and (0 < self.pos_prev[0]< 640 and 0 < self.pos_prev[1] < 480): 
+        if not(0 < self.pos_now[0] < 640 and 0 < self.pos_now[1] < 480): 
             self.animal_flag += 1
-            self.animal_now = self.animal_init[self.animal_flag%3]
-
-        if (0<self.pos_now[0]<640 and 0 < self.pos_now[1] < 480) and not(0<self.pos_prev[0]<640 and 0<self.pos_prev[1]<480):
-            if self.animal_now=='cat':
-                sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/cat.ogg')
-                #sfx1.set_volume(0.5)
-                sfx1.play()
-            elif self.animal_now=='horse':
-                sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/horse.ogg')
-                #sfx1.set_volume(0.5)
-                sfx1.play()
-            else:
-                sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/bird.ogg')
-                #sfx1.set_volume(0.5)
-                sfx1.play()
+            self.animal_now = self.animal_init[self.flag%3]
         
 
 
             # check if user collided to buckets
         if self.check_collision(self.bucket_y,self.pos_now,self.distance):
             self.spill_y+=1
+        elif self.check_collision(self.bucket_g,self.pos_now,self.distance):
+            self.spill_g+=1
+        elif self.check_collision(self.bucket_s,self.pos_now,self.distance):
+            self.spill_s+=1
+        elif self.check_collision(self.bucket_p,self.pos_now,self.distance):
+            self.spill_p+=1
+
+            # check if user collided to spilled paint
+        if self.check_collision(self.yellow,self.pos_now,self.distance):
             if self.spill_y!=0:
                 self.color_now='_y'
                 self.time=1
                 self.opacity_now=300
-        elif self.check_collision(self.bucket_g,self.pos_now,self.distance):
-            self.spill_g+=1
+        elif self.check_collision(self.green,self.pos_now,self.distance):
             if self.spill_g!=0:
                 self.color_now='_g'
                 self.time=1
                 self.opacity_now=300
-        elif self.check_collision(self.bucket_s,self.pos_now,self.distance):
-            self.spill_s+=1
+        elif self.check_collision(self.skyblue,self.pos_now,self.distance):
             if self.spill_s!=0:
                 self.color_now='_s'
                 self.time=1
                 self.opacity_now=300
-        elif self.check_collision(self.bucket_p,self.pos_now,self.distance):
-            self.spill_p+=1
+        elif self.check_collision(self.pink,self.pos_now,self.distance):
             if self.spill_p!=0:
                 self.color_now='_p'
                 self.time=1
@@ -215,8 +214,7 @@ class Drawing:
                 self.time=0
                 
         # broom img
-        if self.broom_flag==0:
-            self.screen.blit(self.broom_1,(self.broom[0]-int(67/2),self.broom[1]-int(116/2)))
+        self.screen.blit(self.broom_1,(self.broom[0]-int(67/2),self.broom[1]-int(116/2)))
 
         # draw stand up/spilled paint bucket depending on 'spill_' bool
         if self.spill_y==0:#YELLO
@@ -229,8 +227,8 @@ class Drawing:
             self.spill_y+=1
             if self.spill_y>20:
                 self.spill_y=0
-                self.X=random.randint(50,600)
-                self.Y=random.randint(50,430)
+                self.X=random.randint(50,750)
+                self.Y=random.randint(50,550)
                 self.yellow=(self.X,self.Y)
                 self.bucket_y=(self.yellow[0]-70,self.yellow[1])
         
@@ -244,8 +242,8 @@ class Drawing:
             self.spill_g+=1
             if self.spill_g>20:
                 self.spill_g=0
-                self.X=random.randint(50,600)
-                self.Y=random.randint(50,430)
+                self.X=random.randint(120,750)
+                self.Y=random.randint(120,550)
                 self.green=(self.X,self.Y)
                 self.bucket_g=(self.green[0]-70,self.green[1])
         
@@ -259,8 +257,8 @@ class Drawing:
             self.spill_s+=1
             if self.spill_s>20:
                 self.spill_s=0
-                self.X=random.randint(50,600)
-                self.Y=random.randint(50,430)
+                self.X=random.randint(50,750)
+                self.Y=random.randint(50,550)
                 self.skyblue=(self.X,self.Y)
                 self.bucket_s=(self.skyblue[0]-70,self.skyblue[1])
         
@@ -274,8 +272,8 @@ class Drawing:
             self.spill_p+=1
             if self.spill_p>20:
                 self.spill_p=0
-                self.X=random.randint(50,600)
-                self.Y=random.randint(50,430)
+                self.X=random.randint(50,750)
+                self.Y=random.randint(50,550)
                 self.pink=(self.X,self.Y)
                 self.bucket_p=(self.pink[0]-70,self.pink[1])
 
@@ -288,15 +286,27 @@ class Drawing:
             sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/erase.ogg')
             sfx1.set_volume(0.5)
             sfx1.play()
-            self.broom_flag=1
-        else:
-            self.broom_flag=0
             
 
         # user img
         
         #screen.blit(flower,(pos_now[0]-int(flower_size/2),pos_now[1]-int(flower_size/2)))
+        if self.flag==1:
+            self.X=random.randint(0,40)
+            self.Y=random.randint(0,40)
 
+        self.screen.blit(self.imgLoad('blink'+str(self.flag)),(self.pos_now[0]-self.X,self.pos_now[1]-self.Y))
+
+        if self.flag==4:
+            self.X2=random.randint(0,40)
+            self.Y2=random.randint(0,40)
+        self.screen.blit(self.imgLoad('blink'+str(self.flag-3 if self.flag>3 else self.flag+5)),\
+                         (self.pos_now[0]-self.X2,self.pos_now[1]-self.Y2))
+
+        if self.flag==8:
+            self.flag=0
+
+        self.flag+=1
 
         if self.opacity_now <= 10:
             self.guide_count += 1
@@ -307,13 +317,13 @@ class Drawing:
         if self.color_now is None:
             #guide window blit
             if self.guide_count>=20:
-                self.screen.blit(self.guide1,(150,100))
+                self.screen.blit(self.guide1,(100,100))
                 if (self.spill_y>0 and self.spill_y<20) or (self.spill_s>0 and self.spill_s<20) or (self.spill_g>0 and self.spill_g<20)\
                    or (self.spill_p>0 and self.spill_p<20):
-                    self.screen.blit(self.guide2,(150,100))
+                    self.screen.blit(self.guide2,(100,100))
                     self.guide2_count += 1
             if self.guide2_count > 0:
-                self.screen.blit(self.guide2,(150,100))
+                self.screen.blit(self.guide2,(100,100))
                 self.guide2_count += 1
                 if self.guide2_count >= 15:
                     self.guide2_count = 0
@@ -342,31 +352,22 @@ class Drawing:
             self.highest_len = len(self.mousepos)
             cv.imwrite('./drawing_imgs/output/popimage.jpg', img)
             pygame.image.save(self.screen,"./drawing_imgs/output/screenshot.jpg")
+            
 
-
-        #player image (face)
-        if self.animal_now=='cat':
-            self.screen.blit(self.cat_face,(self.pos_now[0]-20,self.pos_now[1]-20))
-        elif self.animal_now=='horse':
-            self.screen.blit(self.horse_face,(self.pos_now[0]-20,self.pos_now[1]-20))
-        else:
-            self.screen.blit(self.bird_face,(self.pos_now[0]-10,self.pos_now[1]-10))           
-    
         #guide window blit
         if self.guide_count>=20:
-            self.screen.blit(self.guide1,(150,100))
+            self.screen.blit(self.guide1,(100,100))
             if (self.spill_y>0 and self.spill_y<20) or (self.spill_s>0 and self.spill_s<20) or (self.spill_g>0 and self.spill_g<20) or\
                (self.spill_p>0 and self.spill_p<20):
-                self.screen.blit(self.guide2,(150,100))
+                self.screen.blit(self.guide2,(100,100))
                 self.guide2_count += 1
         if self.guide2_count > 0:
-            self.screen.blit(self.guide2,(150,100))
+            self.screen.blit(self.guide2,(100,100))
             self.guide2_count += 1
             if self.guide2_count >= 15:
                 self.guide2_count = 0
                 self.guide_count = 0
-
-
+        
         if time == 0:
             cv.imwrite('./drawing_imgs/output/popimage.jpg', img)
             pygame.image.save(self.screen,"./drawing_imgs/output/screenshot.jpg")
