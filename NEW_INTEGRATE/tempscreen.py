@@ -5,7 +5,7 @@ import sys
 import pygame
 from pygame.locals import *
 from pygame.display import *
-
+import img_upload
 from random import *
 import math
 import cv2
@@ -140,9 +140,9 @@ def gameScreen(StoU,recvXY):
     TARGET_FPS = 60
     clock = pygame.time.Clock()
     
-    SELECT_TIME = 0
+    SELECT_TIME = 5
     WARNING_TIME = 2
-    PLAY_TIME = 5
+    PLAY_TIME = 15
     REWARD_TIME = 5
     global fontObj
     fontObj = pygame.font.Font('C:\Windows\Fonts\Arial.ttf', 32)
@@ -169,8 +169,16 @@ def gameScreen(StoU,recvXY):
     frontcam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
     frontcam.set(cv2.CAP_PROP_FRAME_WIDTH,W)
     frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
-    ret, frame = frontcam.read()
+    
+    while True:
+        ret, frame = frontcam.read()
+        cv2.imshow("now", frame)
+        if cv2.waitKey(1) & 0xFF == ord('s'):
+            cv2.destroyWindow("now")
+            break
+
     frame = np.flip(frame, axis =1)
+    
     background_img = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
     background_img = cv2.GaussianBlur(background_img, (5,5),255)
     sleep_start_time = time.time()
@@ -190,9 +198,9 @@ def gameScreen(StoU,recvXY):
 ##                cv2.imshow("screen",frame)
             
             if cam_on == True and int(time.time() - sleep_start_time) > 30:
-                frontcam.release()
+                #frontcam.release()
                 print("relased")
-                cam_on = False
+                #cam_on = False
 
             
         elif mode == "SELECT_MODE":
@@ -282,14 +290,15 @@ def gameScreen(StoU,recvXY):
 
                 if winner_mode == "FIREWORK" : #------------------DB upload 섹션
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-                    img_upload.upload_img('Firework','./firework_imgs/output/screenshot.jpg','./firework_imgs/output/popimage.jpg')
+##                    img_upload.upload_img('Firework','./firework_imgs/output/screenshot.jpg','./firework_imgs/output/popimage.jpg')
                     
                     my_score = firework.result
+
+                    my_person_img = pygame.image.load('./firework_imgs/output/popimage.jpg')
                     
                     firework_winners = comparingScore(firework_winners, my_score, my_person_img, 'firework')
                     reward_winners = firework_winners
                     
-                    my_person_img = pygame.image.load('./firework_imgs/output/popimage.jpg')
                     my_screen_img = pygame.image.load('./firework_imgs/output/screenshot.jpg')
                     my_qr_img = pygame.image.load('./firework_imgs/output/qr_popimage.jpg')
                     score1_img = pygame.image.load('./firework_imgs/output/score1.jpg')
@@ -297,7 +306,7 @@ def gameScreen(StoU,recvXY):
                 elif winner_mode == "VIRUS":
                     cv2.imwrite('./virus_imgs/output/popimage.jpg',frame)
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-                    img_upload.upload_img('Virus','./virus_imgs/output/screenshot.jpg','./virus_imgs/output/popimage.jpg')
+##                    img_upload.upload_img('Virus','./virus_imgs/output/screenshot.jpg','./virus_imgs/output/popimage.jpg')
                     
                     my_score = virus.d_virus
                     
@@ -312,7 +321,7 @@ def gameScreen(StoU,recvXY):
 
                 elif winner_mode == "DRAWING":
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-                    img_upload.upload_img('Drawing','./drawing_imgs/output/screenshot.jpg''./drawing_imgs/output/popimage.jpg')
+##                    img_upload.upload_img('Drawing','./drawing_imgs/output/screenshot.jpg''./drawing_imgs/output/popimage.jpg')
                     
                     my_person_img = pygame.image.load('./drawing_imgs/output/popimage.jpg')
                     my_screen_img = pygame.image.load('./drawing_imgs/output/screenshot.jpg')

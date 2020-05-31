@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 server_ip = "http://10.200.37.130:8000"
 
 def upload_img(program_info, content_img, user_img):
-    ctime = time.strftime("%Y년 %m월 %d일, %H시 %M분", time.localtime(time.time()))
+    ctime = time.strftime("%Y, %m, %d, %H, %M", time.localtime(time.time()))
         
     files = {'user_img':open(user_img,'rb'),'content_img':open(content_img,'rb')}
     values = {'user_info':ctime,'program_info':program_info}

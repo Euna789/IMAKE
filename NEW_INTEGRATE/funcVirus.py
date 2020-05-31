@@ -12,7 +12,6 @@ import cv2
 import numpy as np
 from collections import Counter
 import threading
-from img_upload import *
 
 #--------------------virus 클래스 정의 ----------------------------
 class Virus:
