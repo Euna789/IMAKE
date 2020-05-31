@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import *
 from random import *
 import math
+import numpy as np
 
 W = 640
 H = 480
@@ -29,14 +30,18 @@ class Ray:
     def check_me(self, mouse):
         return (self.x-10 < mouse[0] <self.x+10) and (self.y - 10 < mouse[1] < self.y+10)  
 
-    def update(self, mouse):
+    def update(self, mask):
         pygame.draw.line(self.screen, self.color, (self.x,self.y), (self.x,self.y+40),1)     
         self.y -= self.speed
 
         self.dest_x = self.x
         self.dext_y = self.y
         
-        return (self.x-10 < mouse[0] <self.x+10) and (self.y - 10 < mouse[1] < self.y+10)  
+        if self.y < 0 or self.x < 0 or self.x >= 640 or self.y >= 480 :
+            return False
+        else:
+            
+            return mask[math.floor(self.y)][math.floor(self.x)] == 255  
 
 #-------------------------Particle
 class Particle:
@@ -107,7 +112,7 @@ class Fire_type1:
         if ( 50 > self.count > 20):
             Draw(self.inner)
 
-    def update(self, mouse):
+    def update(self, mask):
         
         if self.ray_bool: #마우스에 닿았을 때
             if self.count==0: #바깥쪽 폭죽 생성 전
@@ -130,7 +135,7 @@ class Fire_type1:
             return True #boolean
             
         else: #마우스에 아직 안 닿았을 때
-            self.ray_bool = self.ray.update(mouse)
+            self.ray_bool = self.ray.update(mask)
         
         self.y += self.vy
 
@@ -507,6 +512,9 @@ class Fire_type7:
 
         self.screen = screen
         self.photo = False
+
+        self.mask = np.zeros(shape = (H,W))
+        self.mask[80][int(W/2)] = 255
        
     def makeoutter(self):
         for i in range (randint(100,250)):
@@ -569,7 +577,7 @@ class Fire_type7:
                 return True #boolean
             
         else: #마우스에 아직 안 닿았을 때
-            self.ray_bool = self.ray.update((W/2, 80))
+            self.ray_bool = self.ray.update(self.mask)
 
         
         self.y += self.vy

@@ -15,15 +15,6 @@ import firetype
 class FireFunc:
     #색 정의
     BLACK= (0,0,0) #R G B
-    '''
-    RED = (255, 0, 0)
-    GREEN = (255,0, 255)
-    BLUE = (0, 0, 255)
-    ORANGE = (255,180,0)
-    YELLOW = (255,255,0)
-    YELLOW_A = (255,255,0, 80)
-    BLUE_A = (0, 0, 255, 127)  # R, G, B, Alpha(투명도, 255 : 완전 불투명)
-    '''
 
     global W
     global H
@@ -107,9 +98,9 @@ class FireFunc:
         
         temp = np.rot90(thresh_img)        
         mask = np.flipud(temp)
-        #print(mask)
         me = pygame.surfarray.make_surface(mask).convert()
         me.set_alpha(100)
+
 
         if firetype.p_fw % 10 == 0 and not self.reward and firetype.p_fw>0 :
             print(firetype.p_fw)
@@ -131,44 +122,42 @@ class FireFunc:
             m_x = f.ray.x
             m_y =  f.ray.y
             #건물
-            inside = np.where(self.arc_x == m_x)[0]  #여기수정필요...
+            inside = np.where(self.arc_x == m_x)[0]  # x가 건물이랑 같다면
             if len(inside) > 0:
+                
                 out = min(inside)
-                if m_y > self.arc_y[out]:
-                    if f.update([0,0]):
+                
+                if m_y > self.arc_y[out]:   # 건물 안에 있을 때
+                    zero = np.zeros_like(thresh_img)
+                    if f.update(zero):
                         del(self.fires[i])
                         me_done=True
                     continue
-                else:
-                    if len(exists[0]) > 0:  # 사람이 인식되면
-                        for k in range(len(exists[0])):
-                            mouse=[exists[0][k],exists[1][k]]
-                            if f.ray.check_me(mouse) and not me_done:
-                                me_done = True
-                                break
-                        #폭죽이 마지막까지 출력되었으면 fires에서 삭제
-                        if f.update(mouse):
-                            self.reward = False
-                            del(self.fires[i])
+                
+                else:   #건물 밖에 있을 때
+                    
+                    #폭죽이 마지막까지 출력되었으면 fires에서 삭제
+                    if f.update(thresh_img):
+                        self.reward = False
+                        del(self.fires[i])
                             
                     else:
                         #폭죽이 마지막까지 출력되었으면 fires에서 삭제
-                        if f.update([0,0]):
+                        zero = np.zeros_like(thresh_img)
+                        if f.update(zero):
                             del(self.fires[i])
                             me_done=True
                             
-            else:
-                if len(exists[0]) > 0:
-                    for k in range(len(exists[0])):
-                        mouse=[exists[0][k],exists[1][k]]
-                        if f.ray.check_me(mouse) and not me_done:
-                            me_done = True
-                            break
-                    if f.update(mouse):
+            else:    # x가 건물이랑 같은게 없는 경우(건물 외부)
+                
+                if len(exists[0]) > 0:   #사람이 있으면 
+                    
+                    if f.update(thresh_img):
                         del(self.fires[i])
                             
-                else:
-                    if f.update([0,0]):
+                else:   # 사람이 없음 -> 불꽃은 올라감
+                    zero = np.zeros_like(thresh_img)
+                    if f.update(zero):
                         del(self.fires[i])
                         me_done=True
 
