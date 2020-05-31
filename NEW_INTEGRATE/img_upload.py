@@ -10,13 +10,11 @@ from bs4 import BeautifulSoup
 
 server_ip = "http://10.200.37.130:8000"
 
-def upload_img(filename):
-
-    my_img = cv2.imread(filename)
-    ctime = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime(time.time()))
-
-    files = {'img':open(filename,'rb')}
-    values = {'name':ctime,'title':'컨텐츠제목'}
+def upload_img(program_info, content_img, user_img):
+    ctime = time.strftime("%Y년 %m월 %d일, %H시 %M분", time.localtime(time.time()))
+        
+    files = {'user_img':open(user_img,'rb'),'content_img':open(content_img,'rb')}
+    values = {'user_info':ctime,'program_info':program_info}
 
     r = requests.post(server_ip+"/upload/", files = files, data = values)
     
