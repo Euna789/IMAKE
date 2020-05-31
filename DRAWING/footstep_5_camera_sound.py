@@ -5,7 +5,7 @@ import cv2 as cv
 import random
 from pygame.locals import *
 
-cap = cv.VideoCapture('6.mp4')
+cap = cv.VideoCapture(0)
 cap.set(3,640)
 cap.set(4,480)
 
@@ -13,7 +13,7 @@ cap.set(4,480)
 pygame.init()
 pygame.mixer.init()
 pygame.mixer.pre_init(44100,-16,2,512)
-screen = pygame.display.set_mode((640, 480),FULLSCREEN | HWSURFACE | DOUBLEBUF)
+screen = pygame.display.set_mode((640, 480), DOUBLEBUF)
 clock = pygame.time.Clock()
 
 #blit with opacity
@@ -56,6 +56,7 @@ def drawObject(animal, XY, opacity):
 #blink=pygame.image.load('blink.png')
 #blink_opacity=100
 flag=1
+broom_flag=0
 
 # PAINT IMG
 guide1=pygame.transform.scale(imgLoad('guide_1'),(500,120))
@@ -126,7 +127,7 @@ bucket_s=(380,300)
 skyblue=(450,300)
 pink=(650,300)
 bucket_p=(580,300)
-broom=(750,100)
+broom=(550,100)
 
 distance=40
 
@@ -166,12 +167,12 @@ while not done:
         continue
 
     img = cv.resize(img, (640,480))
-    points = detect.hough_detect(img)
+    points = pygame.mouse.get_pos()
     
     #cv.imshow('result', img)
     # if person head is found
     if type(points) is tuple:
-        pos_now = (points[0]*1.3-60, points[1]*1.3-60)
+        pos_now = points
 
     # if user goes out of the screen, change animal
     if not(0 < pos_now[0] < 640 and 0 < pos_now[1] < 480): 
@@ -183,34 +184,50 @@ while not done:
         # check if user collided to buckets
     if check_collision(bucket_y,pos_now,distance):
         spill_y+=1
-    elif check_collision(bucket_g,pos_now,distance):
-        spill_g+=1
-    elif check_collision(bucket_s,pos_now,distance):
-        spill_s+=1
-    elif check_collision(bucket_p,pos_now,distance):
-        spill_p+=1
-
-        # check if user collided to spilled paint
-    if check_collision(yellow,pos_now,distance):
         if spill_y!=0:
             color_now='_y'
             time=1
             opacity_now=300
-    elif check_collision(green,pos_now,distance):
+    elif check_collision(bucket_g,pos_now,distance):
+        spill_g+=1
         if spill_g!=0:
             color_now='_g'
             time=1
             opacity_now=300
-    elif check_collision(skyblue,pos_now,distance):
+    elif check_collision(bucket_s,pos_now,distance):
+        spill_s+=1
         if spill_s!=0:
             color_now='_s'
             time=1
             opacity_now=300
-    elif check_collision(pink,pos_now,distance):
+    elif check_collision(bucket_p,pos_now,distance):
+        spill_p+=1
         if spill_p!=0:
             color_now='_p'
             time=1
             opacity_now=300
+
+##        # check if user collided to spilled paint
+##    if check_collision(yellow,pos_now,distance):
+##        if spill_y!=0:
+##            color_now='_y'
+##            time=1
+##            opacity_now=300
+##    elif check_collision(green,pos_now,distance):
+##        if spill_g!=0:
+##            color_now='_g'
+##            time=1
+##            opacity_now=300
+##    elif check_collision(skyblue,pos_now,distance):
+##        if spill_s!=0:
+##            color_now='_s'
+##            time=1
+##            opacity_now=300
+##    elif check_collision(pink,pos_now,distance):
+##        if spill_p!=0:
+##            color_now='_p'
+##            time=1
+##            opacity_now=300
     
     if time>0:
         time+=1
@@ -220,7 +237,8 @@ while not done:
             time=0
             
     # broom img
-    screen.blit(broom_1,(broom[0]-int(67/2),broom[1]-int(116/2)))
+    if broom_flag==0:
+        screen.blit(broom_1,(broom[0]-int(67/2),broom[1]-int(116/2)))
 
     # draw stand up/spilled paint bucket depending on 'spill_' bool
     if spill_y==0:#YELLO
@@ -233,8 +251,8 @@ while not done:
         spill_y+=1
         if spill_y>20:
             spill_y=0
-            X=random.randint(50,750)
-            Y=random.randint(50,550)
+            X=random.randint(50,600)
+            Y=random.randint(50,430)
             yellow=(X,Y)
             bucket_y=(yellow[0]-70,yellow[1])
     
@@ -248,8 +266,8 @@ while not done:
         spill_g+=1
         if spill_g>20:
             spill_g=0
-            X=random.randint(120,750)
-            Y=random.randint(120,550)
+            X=random.randint(50,600)
+            Y=random.randint(50,430)
             green=(X,Y)
             bucket_g=(green[0]-70,green[1])
     
@@ -263,8 +281,8 @@ while not done:
         spill_s+=1
         if spill_s>20:
             spill_s=0
-            X=random.randint(50,750)
-            Y=random.randint(50,550)
+            X=random.randint(50,600)
+            Y=random.randint(50,430)
             skyblue=(X,Y)
             bucket_s=(skyblue[0]-70,skyblue[1])
     
@@ -278,8 +296,8 @@ while not done:
         spill_p+=1
         if spill_p>20:
             spill_p=0
-            X=random.randint(50,750)
-            Y=random.randint(50,550)
+            X=random.randint(50,600)
+            Y=random.randint(50,430)
             pink=(X,Y)
             bucket_p=(pink[0]-70,pink[1])
 
@@ -292,6 +310,10 @@ while not done:
         sfx1 = pygame.mixer.Sound('sound/erase.ogg')
         sfx1.set_volume(0.5)
         sfx1.play()
+        broom_flag=1
+    else:
+        broom_flag=0
+        
         
 
     # user img
