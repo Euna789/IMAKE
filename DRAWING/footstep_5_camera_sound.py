@@ -5,7 +5,7 @@ import cv2 as cv
 import random
 from pygame.locals import *
 
-cap = cv.VideoCapture('6.mp4')
+cap = cv.VideoCapture(1)
 cap.set(3,640)
 cap.set(4,480)
 
@@ -13,7 +13,7 @@ cap.set(4,480)
 pygame.init()
 pygame.mixer.init()
 pygame.mixer.pre_init(44100,-16,2,512)
-screen = pygame.display.set_mode((640, 480),FULLSCREEN | HWSURFACE | DOUBLEBUF)
+screen = pygame.display.set_mode((640, 480),FULLSCREEN)
 clock = pygame.time.Clock()
 
 #blit with opacity
