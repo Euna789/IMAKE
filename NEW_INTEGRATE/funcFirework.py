@@ -29,6 +29,7 @@ class FireFunc:
 
     fires = []
     reward = False
+    result = 0
     pygame.init()
     pygame.mixer.init()
     
@@ -102,7 +103,7 @@ class FireFunc:
         me.set_alpha(100)
 
 
-        if firetype.p_fw % 10 == 0 and not self.reward and firetype.p_fw>0 :
+        if firetype.p_fw % 10 == 0 and not self.reward:
             print(firetype.p_fw)
             self.fires.append(firetype.Fire_type7(W/2, H/2, self.screen)) #init <-- x,y,qty
             self.reward = True
@@ -129,9 +130,7 @@ class FireFunc:
                 
                 if m_y > self.arc_y[out]:   # 불꽃이 건물 안에 있을 때
                     zero = np.zeros_like(thresh_img) # 불꽃이 어디든 안 터지게 처리
-                    if f.update(zero):  # 무조건 false
-                        del(self.fires[i])
-                        me_done=True
+                    f.update(zero):  # 무조건 false
                     continue
                 
                 else:   #건물 밖에 있을 때
@@ -140,7 +139,7 @@ class FireFunc:
                     if f.update(thresh_img):
                         self.reward = False
                         del(self.fires[i])
-                            
+            '''  
                     else:
                         #폭죽이 마지막까지 출력되었으면 fires에서 삭제
                         zero = np.zeros_like(thresh_img)
@@ -160,6 +159,7 @@ class FireFunc:
                     if f.update(zero):
                         del(self.fires[i])
                         me_done=True
+            '''
 
             if f.photo:
                 self.screen.blit(self.bgimage,(0,0))
@@ -167,7 +167,8 @@ class FireFunc:
                 pygame.image.save(self.screen,"firework_imgs/output/screenshot.jpg")
                 f.photo = False
 
-        text1 = self.myfont.render("Popped Fireworks: " + str(firetype.p_fw),20,(0,128,0)) # 터뜨린 개수 출력
+        self.result = firetype.p_fw
+        text1 = self.myfont.render("Popped Fireworks: " + str(self.result),20,(0,128,0)) # 터뜨린 개수 출력
         self.screen.blit(text1,(10,10))
                                     
         self.screen.blit(self.bgimage,(0,0))

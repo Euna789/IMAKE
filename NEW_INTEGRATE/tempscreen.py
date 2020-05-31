@@ -284,7 +284,7 @@ def gameScreen(StoU,recvXY):
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
                     img_upload.upload_img('Firework','./firework_imgs/output/screenshot.jpg','./firework_imgs/output/popimage.jpg')
                     
-                    my_score = randint(0,20)
+                    my_score = firework.result
                     
                     firework_winners = comparingScore(firework_winners, my_score, my_person_img, 'firework')
                     reward_winners = firework_winners
@@ -299,7 +299,7 @@ def gameScreen(StoU,recvXY):
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
                     img_upload.upload_img('Virus','./virus_imgs/output/screenshot.jpg','./virus_imgs/output/popimage.jpg')
                     
-                    my_score = randint(0,20)
+                    my_score = virus.d_virus
                     
                     my_person_img = pygame.image.load('./virus_imgs/output/popimage.jpg')
                     
