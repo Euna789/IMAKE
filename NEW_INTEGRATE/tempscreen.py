@@ -170,7 +170,7 @@ def gameScreen(StoU,recvXY):
     frontcam.set(cv2.CAP_PROP_FRAME_WIDTH,W)
     frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
     ret, frame = frontcam.read()
-
+    frame = np.flip(frame, axis =1)
     background_img = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
     background_img = cv2.GaussianBlur(background_img, (5,5),255)
     sleep_start_time = time.time()
@@ -331,14 +331,17 @@ def gameScreen(StoU,recvXY):
                 screen.blit(textSurfaceObj, (100,10))
                 if mode == "FIREWORK":
                     if ret:
+                        frame = np.flip(frame, axis = 1)
                         firework.fireMain(background_img, frame)
 
                 elif mode == "VIRUS":
                     if ret:
+                        frame = np.flip(frame, axis = 1)
                         virus.virusMain(background_img, frame)
                         
                 elif mode == "DRAWING": #발자국 찍기
                     if ret:
+                        frame = np.flip(frame, axis = 1)
                         drawing.drawingMain(center,frame, play_limit_time) 
                         
                         

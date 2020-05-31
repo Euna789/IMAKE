@@ -157,7 +157,7 @@ class VirusFunc:
             min_cnt = min(cnt_half)
             max_cnt = max(cnt_half)
             man_size = max_cnt[0] - min_cnt[0]
-            exists_rat = man_size / W
+            exists_rat = man_size / int(W / 2)
         else:
             exists_rat= 0
         
