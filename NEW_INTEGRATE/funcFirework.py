@@ -122,14 +122,14 @@ class FireFunc:
             m_x = f.ray.x
             m_y =  f.ray.y
             #건물
-            inside = np.where(self.arc_x == m_x)[0]  # x가 건물이랑 같다면
+            inside = np.where(self.arc_x == m_x)[0]  # x좌표가 불꽃과 건물이랑 같다면
             if len(inside) > 0:
-                
+                # 
                 out = min(inside)
                 
-                if m_y > self.arc_y[out]:   # 건물 안에 있을 때
-                    zero = np.zeros_like(thresh_img)
-                    if f.update(zero):
+                if m_y > self.arc_y[out]:   # 불꽃이 건물 안에 있을 때
+                    zero = np.zeros_like(thresh_img) # 불꽃이 어디든 안 터지게 처리
+                    if f.update(zero):  # 무조건 false
                         del(self.fires[i])
                         me_done=True
                     continue
