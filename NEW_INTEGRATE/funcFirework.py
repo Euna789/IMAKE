@@ -130,7 +130,7 @@ class FireFunc:
                 
                 if m_y > self.arc_y[out]:   # 불꽃이 건물 안에 있을 때
                     zero = np.zeros_like(thresh_img) # 불꽃이 어디든 안 터지게 처리
-                    f.update(zero):  # 무조건 false
+                    f.update(zero)  # 무조건 false
                     continue
                 
                 else:   #건물 밖에 있을 때
