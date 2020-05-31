@@ -5,11 +5,11 @@ from uppercamera import *
 from tempscreen import *
 
 def f():
-    video = cv2.VideoCapture('video2.mp4')
+    video = cv2.VideoCapture(1)
     while True:
         ret, orig_frame = video.read()
         if not ret:
-            video = cv2.VideoCapture('video2.mp4')
+            video = cv2.VideoCapture(1)
             continue
         orig_frame = cv2.resize(orig_frame, (640,480))
         cv2.imshow("frame", orig_frame)

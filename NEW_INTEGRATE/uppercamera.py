@@ -28,12 +28,12 @@ def upperCam(UtoS,sendXY):
     frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
     '''
     
-    video = cv2.VideoCapture('6.mp4')
+    video = cv2.VideoCapture(1)
     while True:
 
         ret, orig_frame = video.read()
         if not ret:
-            video = cv2.VideoCapture('6.mp4')
+            video = cv2.VideoCapture(1)
             continue
         '''
         ret, orig_frame = frontcam.read()

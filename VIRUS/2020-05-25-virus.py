@@ -295,7 +295,7 @@ while loop == True:
 pygame.image.save(screen,"output/screenshot.jpg")
 cv2.imwrite('output/popimage.jpg', frame)
 
-upload_img('output/popimage.jpg')
+##upload_img('output/popimage.jpg')
 
 font = pygame.font.SysFont('Consolas', 20)
 

@@ -14,6 +14,7 @@ pygame.init()
 pygame.mixer.init()
 pygame.mixer.pre_init(44100,-16,2,512)
 screen = pygame.display.set_mode((640, 480), DOUBLEBUF)
+
 clock = pygame.time.Clock()
 
 #blit with opacity
