@@ -188,24 +188,36 @@ class Drawing:
                 self.color_now='_y'
                 self.time=1
                 self.opacity_now=300
+                sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/splash.ogg')
+                #sfx1.set_volume(0.5)
+                sfx1.play()
         elif self.check_collision(self.bucket_g,self.pos_now,self.distance):
             self.spill_g+=1
             if self.spill_g!=0:
                 self.color_now='_g'
                 self.time=1
                 self.opacity_now=300
+                sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/splash.ogg')
+                #sfx1.set_volume(0.5)
+                sfx1.play()
         elif self.check_collision(self.bucket_s,self.pos_now,self.distance):
             self.spill_s+=1
             if self.spill_s!=0:
                 self.color_now='_s'
                 self.time=1
                 self.opacity_now=300
+                sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/splash.ogg')
+                #sfx1.set_volume(0.5)
+                sfx1.play()
         elif self.check_collision(self.bucket_p,self.pos_now,self.distance):
             self.spill_p+=1
             if self.spill_p!=0:
                 self.color_now='_p'
                 self.time=1
                 self.opacity_now=300
+                sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/splash.ogg')
+                #sfx1.set_volume(0.5)
+                sfx1.play()
         
         if self.time>0:
             self.time+=1
