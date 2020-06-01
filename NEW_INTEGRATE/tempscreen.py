@@ -134,7 +134,7 @@ def drawingRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, reward_
 
 def gameScreen(StoU,recvXY):
     
-    screen = pygame.display.set_mode((W,H), DOUBLEBUF)
+    screen = pygame.display.set_mode((W,H), FULLSCREEN)
     pygame.init()
     pygame.mixer.init()
     TARGET_FPS = 60

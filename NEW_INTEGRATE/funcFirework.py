@@ -28,7 +28,7 @@ class FireFunc:
     clock = pygame.time.Clock()
 
     fires = []
-    reward = False
+    reward = True
     result = 0
     pygame.init()
     pygame.mixer.init()
