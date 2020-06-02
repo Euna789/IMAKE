@@ -20,6 +20,36 @@ class Drawing:
     def __init__(self, screen):
         self.screen=screen
 
+        self.animal_flag = 0
+
+        self.mousepos=[]
+        self.animals=[]
+        self.colors=[]
+        self.opacity=[]
+        self.done=False #done game
+
+        self.color_now=None
+        self.animal_now='cat'
+        self.opacity_now=300
+        self.highest_len = 0
+
+        #spill time
+        self.spill_y=0
+        self.spill_g=0
+        self.spill_s=0
+        self.spill_p=0
+
+        #paint time
+        self.time=0
+
+        #guide window
+        self.guide_count=0
+        self.guide2_count=0
+
+        #camera
+        self.pos_prev = (60, 60)
+        self.pos_now = (60, 60)
+
     def blit_alpha(self,target, source, location, opacity):
         x = location[0]
         y = location[1]
@@ -76,31 +106,7 @@ class Drawing:
     cat_face=imgLoad1('cat_face')
     
     animal_init = ['cat','horse', 'bird']
-    animal_flag = 0
-
-    mousepos=[]
-    animals=[]
-    colors=[]
-    opacity=[]
-    done=False #done game
-
-    color_now=None
-    animal_now='cat'
-    opacity_now=300
-    highest_len = 0
-
-    #spill time
-    spill_y=0
-    spill_g=0
-    spill_s=0
-    spill_p=0
-
-    #paint time
-    time=0
-
-    #guide window
-    guide_count=0
-    guide2_count=0
+    
 
     #color
     YELLOW=(255,255,0)
@@ -122,14 +128,8 @@ class Drawing:
 
     distance=40
 
-    #camera
-    pos_prev = (60, 60)
-    pos_now = (60, 60)
-
     X=0
     Y=0
-
-
 
     def drawingMain(self, center, img, time):
         self.clock.tick(10)

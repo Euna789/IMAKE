@@ -292,7 +292,7 @@ def gameScreen(StoU,recvXY):
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
 ##                    img_upload.upload_img('Firework','./firework_imgs/output/screenshot.jpg','./firework_imgs/output/popimage.jpg')
                     
-                    my_score = firework.result
+                    my_score = firework.points.p_fw
 
                     my_person_img = pygame.image.load('./firework_imgs/output/popimage.jpg')
                     
