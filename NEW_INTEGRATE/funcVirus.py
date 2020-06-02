@@ -105,10 +105,7 @@ class VirusFunc:
     pygame.init()
     pygame.mixer.init()
 
-    hand_img1 = pygame.image.load('./virus_imgs/bg.png')
-    hand_img1 = pygame.transform.scale(hand_img1, (W,H))
-
-    back_png = pygame.image.load('./virus_imgs/back.png')
+    back_png = pygame.image.load('./virus_imgs/toilet_background.png')
     back_png = pygame.transform.scale(back_png, (W,H))
 
     end_png = pygame.image.load('./virus_imgs/end.png')
@@ -176,7 +173,7 @@ class VirusFunc:
     def virusMain(self, background_img, frame):
         self.screen.fill(self.BLACK)  # 화면을 검은색으로 지운다
         self.screen.blit(self.back_png,(0,0))
-        self.screen.blit(self.hand_img1,(0,0))
+
         #font size was 10
         text1 = self.myfont.render("Dead viruses: " + str(self.d_virus),20,(0,128,0))
         self.screen.blit(text1,(10,10))

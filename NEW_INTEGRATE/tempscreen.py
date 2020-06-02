@@ -151,6 +151,8 @@ def gameScreen(StoU,recvXY):
 
     arrow = pygame.image.load('./ui_imgs/arrow.png')
     arrow = pygame.transform.scale(arrow, (int(100), int(100)))
+    select_bg = pygame.image.load('./ui_imgs/select_background.png')
+    select_bg = pygame.transform.scale(select_bg, (int(W), int(H)))
 
     runned = False
     thresh_done=False
@@ -206,7 +208,7 @@ def gameScreen(StoU,recvXY):
 
             
         elif mode == "SELECT_MODE":
-            
+            screen.blit(select_bg, (0,0))
             select_limit_time = SELECT_TIME -int(time.time()-select_start_time)
             if select_limit_time < 0:
                 if center[0] <int((W-innerW)/2)+innerW/3:
