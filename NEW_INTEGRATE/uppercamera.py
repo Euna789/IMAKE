@@ -7,9 +7,9 @@ global H
 H= 480
 
 global innerW
-innerW= 440
+innerW= W
 global innerH
-innerH= int(380)
+innerH= H
 
 display = (W, H)
 TARGET_FPS = 60
@@ -33,7 +33,7 @@ def upperCam(UtoS,sendXY):
 
         ret, orig_frame = video.read()
         if not ret:
-            video = cv2.VideoCapture(1)
+            video = cv2.VideoCapture('video2.mp4')
             continue
         '''
         ret, orig_frame = frontcam.read()

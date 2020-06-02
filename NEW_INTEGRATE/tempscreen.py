@@ -41,9 +41,9 @@ global H
 H= 480
 
 global innerW
-innerW= 440
+innerW=W #440
 global innerH
-innerH= int(380)
+innerH=H #380
 
 def comparingScore(winner_array, my_score, my_img, where):
     winner_array.append(my_score)
@@ -149,6 +149,8 @@ def gameScreen(StoU,recvXY):
     global fontObjBig
     fontObjBig = pygame.font.Font('C:\Windows\Fonts\Arial.ttf', 56)  
 
+    arrow = pygame.image.load('./ui_imgs/arrow.png')
+    arrow = pygame.transform.scale(arrow, (int(100), int(100)))
 
     runned = False
     thresh_done=False
@@ -254,8 +256,9 @@ def gameScreen(StoU,recvXY):
                     pygame.draw.rect(screen, WHITE, [int((W-innerW)/2)+innerW/3, H-innerH, innerW/3, H],5) # [DRAWING]
                 elif int((W-innerW)/2)+innerW/3*2 <= center[0] < int((W-innerW)/2)+innerW:
                     pygame.draw.rect(screen, WHITE, [int((W-innerW)/2)+innerW/3*2, H-innerH, innerW/3, H],5) # [VIRUS]
-                    
-                pygame.draw.circle(screen, (255,255,255), center,15,0)
+                pygame.image.save(screen,"screenshot.jpg")
+                #pygame.draw.circle(screen, (255,255,255), center,15,0)
+                screen.blit(arrow, (center[0]-50, center[1]-50))
                 
             if cam_on :
                 ret, frame = frontcam.read() #배경캡쳐 됨
@@ -326,6 +329,7 @@ def gameScreen(StoU,recvXY):
                     my_person_img = pygame.image.load('./drawing_imgs/output/popimage.jpg')
                     my_screen_img = pygame.image.load('./drawing_imgs/output/screenshot.jpg')
                     my_qr_img = pygame.image.load('./virus_imgs/output/qr_popimage.jpg')
+                    
 
 
 
@@ -351,7 +355,9 @@ def gameScreen(StoU,recvXY):
                 elif mode == "DRAWING": #발자국 찍기
                     if ret:
                         frame = np.flip(frame, axis = 1)
-                        drawing.drawingMain(center,frame, play_limit_time) 
+                
+                        drawing.drawingMain(center,frame, play_limit_time)
+                        
                         
                         
        
