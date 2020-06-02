@@ -229,7 +229,6 @@ class VirusFunc:
         if(len(exists[0])==0):
             #안내창 보여주기
             self.screen.blit(self.ins,(108,176))
-            self.d_virus = 0
             self.chan1.set_volume(1.0, 1.0)
         else:
             a = thresh_img.copy()
