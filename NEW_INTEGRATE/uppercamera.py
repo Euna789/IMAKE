@@ -13,7 +13,26 @@ innerH= H
 
 display = (W, H)
 TARGET_FPS = 60
-     
+
+def preprocess(frame):
+
+    frame = cv2.bilateralFilter(frame, 9, 75, 75)
+
+    ret, frame = cv2.threshold(frame, 30, 255, cv2.THRESH_BINARY_INV)
+
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2YUV)
+
+    frame[:,:,0] = cv2.equalizeHist(frame[:,:,0])
+
+    aft_hist = cv2.cvtColor(frame, cv2.COLOR_YUV2BGR)
+
+    frame = cv2.cvtColor(aft_hist, cv2.COLOR_BGR2GRAY)
+
+    ret, frame = cv2.threshold(frame, 14, 255, cv2.THRESH_BINARY_INV)
+    
+    return frame
+
+   
 def upperCam(UtoS,sendXY):
     none_count = 0 
     NONE_SEC = 20 #사람 없는 거 최대 몇 초까지 보고 절전모드할 지
@@ -41,9 +60,10 @@ def upperCam(UtoS,sendXY):
             continue
         '''
         orig_frame = cv2.resize(orig_frame, display)
-        gray = cv2.cvtColor(orig_frame, cv2.COLOR_BGR2GRAY)
-        gray = cv2.medianBlur(gray,5)
-        circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,minDist=80,\
+
+        gray = preprocess(orig_frame)
+        gray = cv2.Canny(gray, 20, 100)
+        circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1.12,minDist=80,\
                                param1=50,param2=30,minRadius=0,maxRadius=70)
 
         valid_circle = 0

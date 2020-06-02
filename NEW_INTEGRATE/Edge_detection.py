@@ -18,7 +18,8 @@ def preprocess(frame):
     ret, frame = cv2.threshold(frame, 14, 255, cv2.THRESH_BINARY_INV)
     
     return frame
-    
+
+def detect(frame):
     
 global W
 W= 640
