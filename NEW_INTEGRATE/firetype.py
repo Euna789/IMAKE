@@ -7,10 +7,10 @@ import numpy as np
 W = 640
 H = 480
 
-global p_fw
-p_fw = 0
-global highest_y
-highest_y = 480
+class Points:
+    def __init__(self):
+        self.p_fw = 0
+        self.highest_y = 480
 
 #-----------------------Ray
 class Ray:
@@ -90,7 +90,6 @@ class Fire_type1:
         self.count = 0
 
         self.screen = screen
-        self.photo = False
 
         self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
         self.effect.set_volume(1)
@@ -119,14 +118,7 @@ class Fire_type1:
     def update(self, mask):
         
         if self.ray_bool: #마우스에 닿았을 때
-            if self.count==0: #바깥쪽 폭죽 생성 전
-                global p_fw
-                p_fw += 1
-                global highest_y
-                if self.y < highest_y:
-                    highest_y = self.y
-                    self.photo = True
-                    
+            if self.count==0: #바깥쪽 폭죽 생성 전                    
                 self.x = self.ray.dest_x
                 self.y = self.ray.dest_y
                 self.makeoutter()
@@ -170,8 +162,7 @@ class Fire_type2:
         self.count = 0
 
         self.screen = screen
-        self.photo = False
-       
+
         self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
         self.effect.set_volume(1)
         self.effect.play(1)
@@ -200,12 +191,6 @@ class Fire_type2:
         
         if self.ray_bool: #마우스에 닿았을 때
             if self.count==0: #바깥쪽 폭죽 생성 전
-                global p_fw
-                p_fw += 1
-                global highest_y
-                if self.y < highest_y:
-                    highest_y = self.y
-                    self.photo = True
                 self.x = self.ray.dest_x
                 self.y = self.ray.dest_y
                 self.makeoutter()
@@ -250,8 +235,7 @@ class Fire_type3:
         self.count = 0
 
         self.screen = screen
-        self.photo = False
-       
+
         self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
         self.effect.set_volume(1)
         self.effect.play(1)
@@ -283,12 +267,6 @@ class Fire_type3:
         
         if self.ray_bool: #마우스에 닿았을 때
             if self.count==0: #바깥쪽 폭죽 생성 전
-                global p_fw
-                p_fw += 1
-                global highest_y
-                if self.y < highest_y:
-                    highest_y = self.y
-                    self.photo = True
                 self.makeoutter()
                 self.color = (randint(50,255),randint(50,255), randint(50,255))
                 
@@ -332,8 +310,7 @@ class Fire_type4:
         self.count = 0
 
         self.screen = screen
-        self.photo = False
-       
+ 
         self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
         self.effect.set_volume(1)
         self.effect.play(1)
@@ -362,12 +339,6 @@ class Fire_type4:
         
         if self.ray_bool: #마우스에 닿았을 때
             if self.count==0: #바깥쪽 폭죽 생성 전
-                global p_fw
-                p_fw += 1
-                global highest_y
-                if self.y < highest_y:
-                    highest_y = self.y
-                    self.photo = True
                 self.makeoutter()
                 self.color = (randint(100,255),randint(100,255),randint(100,255))
                 self.makeinner()
@@ -406,8 +377,7 @@ class Fire_type5:
         self.count = 0
 
         self.screen = screen
-        self.photo = False
-       
+  
         self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
         self.effect.set_volume(1)
         self.effect.play(1)
@@ -436,12 +406,6 @@ class Fire_type5:
         
         if self.ray_bool: #마우스에 닿았을 때
             if self.count==0: #바깥쪽 폭죽 생성 전
-                global p_fw
-                p_fw += 1
-                global highest_y
-                if self.y < highest_y:
-                    highest_y = self.y
-                    self.photo = True
                 self.x = self.ray.dest_x
                 self.y = self.ray.dest_y
                 self.makeoutter()
@@ -486,7 +450,6 @@ class Fire_type6:
         self.count = 0
 
         self.screen = screen
-        self.photo = False
 
         self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
         self.effect.set_volume(1)
@@ -506,12 +469,6 @@ class Fire_type6:
         
         if self.ray_bool: #마우스에 닿았을 때
             if self.count==0: #바깥쪽 폭죽 생성 전
-                global p_fw
-                p_fw += 1
-                global highest_y
-                if self.y < highest_y:
-                    highest_y = self.y
-                    self.photo = True
                 self.makeoutter()
                 self.effect = pygame.mixer.Sound("./firework_imgs/splash.wav")
                 self.effect.set_volume(0.7)
@@ -553,11 +510,9 @@ class Fire_type7:
         self.count = 0
 
         self.screen = screen
-        self.photo = False
 
         self.mask = np.zeros(shape = (H,W))
-        self.mask[80][int(W/2)] = 255
-       
+        
         self.effect = pygame.mixer.Sound("./firework_imgs/going_up.wav")
         self.effect.set_volume(1)
         self.effect.play(1)
@@ -606,10 +561,7 @@ class Fire_type7:
     def update(self, mouse):
         if self.ray_bool: #마우스에 닿았을 때
             if self.count==0: #바깥쪽 폭죽 생성 전
-                global highest_y
-                if self.y < highest_y:
-                    highest_y = self.y
-                    self.photo = True
+                print("pop")
                 self.makeoutter()
                 self.makeinner()
                 self.backSparkle()
@@ -626,7 +578,9 @@ class Fire_type7:
                 return True #boolean
             
         else: #마우스에 아직 안 닿았을 때
-            self.ray_bool = self.ray.update(self.mask)
+            self.ray.update(self.mask)
+            if self.ray.y < 80:
+                self.ray_bool = True
 
         
         self.y += self.vy
