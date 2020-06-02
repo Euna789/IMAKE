@@ -27,11 +27,10 @@ class FireFunc:
     TARGET_FPS = 60
     clock = pygame.time.Clock()
 
-    fires = []
+    
     pygame.init()
     pygame.mixer.init()
-    
-    num = 0
+
     myfont = pygame.font.SysFont("comicsansms",20, bold = True)
 
     ##Background image array for checking firework
@@ -47,6 +46,8 @@ class FireFunc:
 
     def __init__(self, screen):
         self.screen = screen
+
+        self.fires = []
 
         ##Background image for showing
         self.bgimage = pygame.image.load('firework_imgs/background.png').convert_alpha()
