@@ -53,10 +53,14 @@ class FireFunc:
         self.bgimage = pygame.image.load('firework_imgs/background.png').convert_alpha()
         self.bgimage = pygame.transform.scale(self.bgimage, (W,H))
 
+        self.blackSurf = pygame.Surface((W, H)).convert_alpha()
+        self.blackSurf.fill([0, 0, 0, 1])
+
         ##instruction
         self.ins = pygame.image.load('firework_imgs/instruction.png').convert_alpha()
 
         self.points = firetype.Points()
+        self.photo = False
 
     def random_Fire(self):
         random = randint(1,6)
@@ -96,7 +100,8 @@ class FireFunc:
         temp = np.flipud(temp)
         exists = np.where(temp == 255)
 
-        self.screen.fill(self.BLACK)  # 화면을 검은색으로 지운다
+        #self.screen.fill(self.BLACK)  # 화면을 검은색으로 지운다
+        self.screen.blit(self.blackSurf, (0,0))  # 블랙으로 리셋
         
         temp = np.rot90(thresh_img)        
         mask = np.flipud(temp)
@@ -135,13 +140,26 @@ class FireFunc:
                         del(self.fires[i])
                     if f.ray_bool and f.count == 0:  # 폭죽이 마우스와 닿았을 때
                         self.points.p_fw += 1
+                        # special 폭죽 추가하기
+                        if self.points.p_fw % 10 == 0:
+                            #print(self.points.p_fw)
+                            self.photo = True
+                            #self.points.p_fw = self.points.p_fw + 1
+                            self.fires.append(firetype.Fire_type7(W/2, H, self.screen)) #init <-- x,y,qty
+                
                         if f.y < self.points.highest_y:
                             self.points.highest_y = f.y
                             #take photo
                             print("highest: ", self.points.highest_y)
-                            self.screen.blit(self.bgimage,(0,0))
+                            #self.screen.blit(self.bgimage,(0,0))
                             cv2.imwrite('firework_imgs/output/popimage.jpg', frame)
-                            pygame.image.save(self.screen,"firework_imgs/output/screenshot.jpg")
+                            #pygame.image.save(self.screen,"firework_imgs/output/screenshot.jpg")
+
+                    if self.photo and f.thickness == 4 and f.count > 20:
+                        self.screen.blit(self.bgimage,(0,0))
+                        pygame.display.flip()  # 화면 전체를 업데이트
+                        pygame.image.save(self.screen,"firework_imgs/output/screenshot.jpg")
+                        self.photo = False
                             
             '''  
                     else:
@@ -165,19 +183,6 @@ class FireFunc:
                         me_done=True
             '''
 
-            if self.points.p_fw % 10 == 0 and self.points.p_fw > 0:
-                #print(firetype.p_fw)
-                self.points.p_fw = self.points.p_fw + 1
-                self.fires.append(firetype.Fire_type7(W/2, H, self.screen)) #init <-- x,y,qty            
-
-            '''
-            if f.photo:
-                print("highest")
-                self.screen.blit(self.bgimage,(0,0))
-                cv2.imwrite('firework_imgs/output/popimage.jpg', frame)
-                pygame.image.save(self.screen,"firework_imgs/output/screenshot.jpg")
-                f.photo = False
-            '''
 
         text1 = self.myfont.render("Popped Fireworks: " + str(self.points.p_fw),20,(0,128,0)) # 터뜨린 개수 출력
         self.screen.blit(text1,(10,10))

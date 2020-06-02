@@ -30,8 +30,8 @@ class Ray:
     def check_me(self, mouse):
         return (self.x-10 < mouse[0] <self.x+10) and (self.y - 10 < mouse[1] < self.y+10)  
 
-    def update(self, mask):
-        pygame.draw.line(self.screen, self.color, (self.x,self.y), (self.x,self.y+40),1)     
+    def update(self, mask, thickness):
+        pygame.draw.line(self.screen, self.color, (self.x,self.y), (self.x,self.y+43),thickness)     
         self.y -= self.speed
 
         self.dest_x = self.x
@@ -80,7 +80,7 @@ class Fire_type1:
         self.y = y
         self.vy = 0.16
         self.color = (randint(100,255),randint(100,255),randint(100,255))
-        self.thickness = randint(1,3)
+        self.thickness = 1
         
         self.ray = Ray(x,y,self.color, screen)
         self.ray_bool = False
@@ -134,7 +134,7 @@ class Fire_type1:
             return True #boolean
             
         else: #마우스에 아직 안 닿았을 때
-            self.ray_bool = self.ray.update(mask)
+            self.ray_bool = self.ray.update(mask, self.thickness)
         
         self.y += self.vy
 
@@ -152,7 +152,7 @@ class Fire_type2:
         self.y = y
         self.vy = 0.16
         self.color = (randint(100,255),randint(100,255),randint(100,255))
-        self.thickness = randint(1,3)
+        self.thickness = 1
         
         self.ray = Ray(x,y,self.color, screen)
         self.ray_bool = False
@@ -207,7 +207,7 @@ class Fire_type2:
                 return True #boolean
             
         else: #마우스에 아직 안 닿았을 때
-            self.ray_bool = self.ray.update(mouse)
+            self.ray_bool = self.ray.update(mouse,self.thickness)
         
         self.y += self.vy
 
@@ -225,7 +225,7 @@ class Fire_type3:
         self.y = y
         self.vy = 0.16
         self.color = (randint(100,255),randint(100,255),randint(100,255))
-        self.thickness = randint(1,3)
+        self.thickness = 1
         
         self.ray = Ray(x,y,self.color, screen)
         self.ray_bool = False
@@ -256,7 +256,7 @@ class Fire_type3:
     def draw(self, mouse):
         if self.count<15:
             self.ray.color = self.color
-            self.ray.update(mouse)
+            self.ray.update(mouse,self.thickness)
         if (self.count < 50):
             Draw(self.outter)
         if (15<self.count<65):
@@ -283,7 +283,7 @@ class Fire_type3:
                 return True #boolean
             
         else: #마우스에 아직 안 닿았을 때
-            self.ray_bool = self.ray.update(mouse)
+            self.ray_bool = self.ray.update(mouse, self.thickness)
 
         if self.count == 15:
             self.makeinner()
@@ -300,7 +300,7 @@ class Fire_type4:
         self.y = y
         self.vy = 0.16
         self.color = (randint(100,255),randint(100,255),randint(100,255))
-        self.thickness = randint(1,3)
+        self.thickness = 1
         
         self.ray = Ray(x,y,self.color, screen)
         self.ray_bool = False
@@ -354,7 +354,7 @@ class Fire_type4:
                 return True #boolean
             
         else: #마우스에 아직 안 닿았을 때
-            self.ray_bool = self.ray.update(mouse)
+            self.ray_bool = self.ray.update(mouse, self.thickness)
             
         return (self.count==51) #boolean ; 카운트 51되면 true
 
@@ -367,7 +367,7 @@ class Fire_type5:
         self.y = y
         self.vy = 0.16
         self.color = (randint(100,255),randint(100,255),randint(100,255))
-        self.thickness = randint(1,3)
+        self.thickness = 1
         
         self.ray = Ray(x,y,self.color, screen)
         self.ray_bool = False
@@ -422,7 +422,7 @@ class Fire_type5:
                 return True #boolean
             
         else: #마우스에 아직 안 닿았을 때
-            self.ray_bool = self.ray.update(mouse)
+            self.ray_bool = self.ray.update(mouse, self.thickness)
         
         self.y += self.vy
 
@@ -440,7 +440,7 @@ class Fire_type6:
         self.y = y
         self.vy = 0.16
         self.color = (randint(100,255),randint(100,255),randint(100,255))
-        self.thickness = randint(1,3)
+        self.thickness = 1
         
         self.ray = Ray(x,y,self.color, screen)
         self.ray_bool = False
@@ -483,7 +483,7 @@ class Fire_type6:
                 return True #boolean
             
         else: #마우스에 아직 안 닿았을 때
-            self.ray_bool = self.ray.update(mouse)
+            self.ray_bool = self.ray.update(mouse, self.thickness)
         
         self.y += self.vy
 
@@ -498,7 +498,7 @@ class Fire_type7:
         self.y = y
         self.vy = 0.16
         self.color = (randint(100,255),randint(100,255),randint(100,255))
-        self.thickness = randint(1,3)
+        self.thickness = 4
         
         self.ray = Ray(x,y,self.color, screen)
         self.ray_bool = False
@@ -536,7 +536,7 @@ class Fire_type7:
         color = (randint(50,255),randint(50,255), randint(50,255))
         xx = randint(50, 580)
         yy = randint(50, 350)
-        for i in range (randint(50,150)):
+        for i in range (randint(30,100)):
             r = uniform(0, 2*math.pi) #float
             R = uniform(0, 0.1*math.pi) #float
             self.sparkle.append(Particle(xx, yy, R*math.sin(r), R*math.cos(r), color, 0.17, self.screen))
@@ -561,7 +561,7 @@ class Fire_type7:
     def update(self, mouse):
         if self.ray_bool: #마우스에 닿았을 때
             if self.count==0: #바깥쪽 폭죽 생성 전
-                print("pop")
+                #print("pop")
                 self.makeoutter()
                 self.makeinner()
                 self.backSparkle()
@@ -578,7 +578,7 @@ class Fire_type7:
                 return True #boolean
             
         else: #마우스에 아직 안 닿았을 때
-            self.ray.update(self.mask)
+            self.ray.update(self.mask, self.thickness)
             if self.ray.y < 80:
                 self.ray_bool = True
 
