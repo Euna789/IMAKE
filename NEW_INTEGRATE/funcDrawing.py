@@ -163,10 +163,14 @@ class Drawing:
             self.pos_now = center
 
         # if user goes out of the screen, change animal
-        if not(0 < self.pos_now[0] < 640 and 0 < self.pos_now[1] < 480) and (0 < self.pos_prev[0]< 640 and 0 < self.pos_prev[1] < 480): 
+        if not(40 < self.pos_now[0] < 600 and 40 < self.pos_now[1] < 435) and \
+           (40 < self.pos_prev[0]< 600 and 40 < self.pos_prev[1] < 435): 
             self.animal_flag += 1
             self.animal_now = self.animal_init[self.animal_flag%3]
+            sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/'+self.animal_now+'.ogg')
+            sfx1.play()
 
+        '''
         if (0<self.pos_now[0]<640 and 0 < self.pos_now[1] < 480) and not(0<self.pos_prev[0]<640 and 0<self.pos_prev[1]<480):
             if self.animal_now=='cat':
                 sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/cat.ogg')
@@ -180,7 +184,7 @@ class Drawing:
                 sfx1 = pygame.mixer.Sound('./drawing_imgs/sound/bird.ogg')
                 #sfx1.set_volume(0.5)
                 sfx1.play()
-        
+        '''
 
 
             # check if user collided to buckets
