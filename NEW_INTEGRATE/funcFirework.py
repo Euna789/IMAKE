@@ -31,7 +31,7 @@ class FireFunc:
     pygame.init()
     pygame.mixer.init()
 
-    myfont = pygame.font.SysFont("comicsansms",20, bold = True)
+    myfont = pygame.font.SysFont("comicsansms",30, bold = True)
 
     ##Background image array for checking firework
     bg = cv2.imread('firework_imgs/background.png')
@@ -189,7 +189,6 @@ class FireFunc:
         self.screen.blit(pygame.image.load("firework_imgs/popped_fireworks.png"),(66,28))
                                     
         self.screen.blit(self.bgimage,(0,0))
-        
-        pygame.display.flip()  # 화면 전체를 업데이트
+        #pygame.display.flip()  # 화면 전체를 업데이트
 
         self.clock.tick(self.TARGET_FPS)  # 프레임 수 맞추기

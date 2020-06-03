@@ -33,7 +33,8 @@ YELLOW_A = (255,255,0, 80)
 PINK = (255,0, 255)
 WHITE = (255,255,255)
 
-sleep_img = pygame.image.load('SLEEP.png')
+sleep_img = pygame.image.load('./ui_imgs/sleep.png')
+blank = pygame.image.load('./ui_imgs/blank.png')
 
 global W
 W= 640
@@ -63,17 +64,18 @@ def comparingScore(winner_array, my_score, my_img, where):
 
     return result
             
-        
-def fireworkRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners):
+
+def winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners, my_score,reward_limit_time):
     my_person_img = pygame.transform.scale(my_person_img, (int(W/2), int(H/2)))
     my_qr_img = pygame.transform.scale(my_qr_img, (int(H/4), int(H/4)))
     score1_img = pygame.transform.scale(score1_img, (int(H/4)-4, int(H/4-10)))
-    reward_bl = pygame.image.load('./ui_imgs/firework_reward_blue.png')
+    reward_bl = pygame.image.load('./ui_imgs/winner_reward.png')
     reward_bl = pygame.transform.scale(reward_bl, (int(W), int(H)))
                   
     text1 = fontObj.render(str(reward_winners[0]),20,YELLOW)
     text2 = fontObj.render(str(reward_winners[1]),20,WHITE)
     text3 = fontObj.render(str(reward_winners[2]),20,WHITE)
+    text4 = fontObj.render(str(my_score),20,WHITE)
     
 
     screen.blit(my_screen_img, (0,0))
@@ -82,37 +84,16 @@ def fireworkRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1
     screen.blit(my_qr_img, (W/7, H/2-20))
     screen.blit(my_person_img, (W/3+24, H/4-18))
 
-    screen.blit(text1,(210,58))
-    screen.blit(text2,(370,58))
-    screen.blit(text3,(500,58))
+    #123등 점수
+    screen.blit(text1,(150,53))
+    screen.blit(text2,(257,53))
+    screen.blit(text3,(363,53))
+    screen.blit(text4,(505,53))
 
-##    savescreen = pygame.transform.scale(screen, (int(W*2), int(H*2)))
-##    pygame.image.save(savescreen,"screenshot.jpg")
-    return screen
-def virusRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners):
-    my_person_img = pygame.transform.scale(my_person_img, (int(W/2), int(H/2)))
-    my_qr_img = pygame.transform.scale(my_qr_img, (int(H/4), int(H/4)))
-    score1_img = pygame.transform.scale(score1_img, (int(H/4)-4, int(H/4-10)))
-    reward_bl = pygame.image.load('./ui_imgs/virus_reward_lblue.png')
-    reward_bl = pygame.transform.scale(reward_bl, (int(W), int(H)))
-                  
-    text1 = fontObj.render(str(reward_winners[0]),20,YELLOW)
-    text2 = fontObj.render(str(reward_winners[1]),20,WHITE)
-    text3 = fontObj.render(str(reward_winners[2]),20,WHITE)
+    #리워드 남은시간
+    textSurfaceObj = fontObjBig.render(str(reward_limit_time), True, WHITE)
+    screen.blit(textSurfaceObj, (533,403))
     
-
-    screen.blit(my_screen_img, (0,0))
-    screen.blit(reward_bl, (0,0))
-    screen.blit(score1_img, (W/7,H/4-22)) # 1등 사진
-    screen.blit(my_qr_img, (W/7, H/2-20))
-    screen.blit(my_person_img, (W/3+24, H/4-18))
-
-    screen.blit(text1,(210,58))
-    screen.blit(text2,(370,58))
-    screen.blit(text3,(500,58))
-
-##    savescreen = pygame.transform.scale(screen, (int(W*2), int(H*2)))
-##    pygame.image.save(savescreen,"screenshot.jpg")
     return screen
 
 def drawingRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, reward_limit_time):
@@ -134,7 +115,7 @@ def drawingRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, reward_
 
 def gameScreen(StoU,recvXY):
     
-    screen = pygame.display.set_mode((W,H), FULLSCREEN)
+    screen = pygame.display.set_mode((W,H))
     pygame.init()
     pygame.mixer.init()
     TARGET_FPS = 60
@@ -151,7 +132,7 @@ def gameScreen(StoU,recvXY):
 
     arrow = pygame.image.load('./ui_imgs/arrow.png')
     arrow = pygame.transform.scale(arrow, (int(100), int(100)))
-    select_bg = pygame.image.load('./ui_imgs/select_mode.png')
+    select_bg = pygame.image.load('./ui_imgs/select_background.png')
     select_bg = pygame.transform.scale(select_bg, (int(W), int(H)))
 
     runned = False
@@ -189,6 +170,11 @@ def gameScreen(StoU,recvXY):
     cam_on = True
     
     while True:
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP:
+                print(pygame.mouse.get_pos())
+                    
         screen.fill(BLACK)
         
         if recvXY.poll():
@@ -197,44 +183,31 @@ def gameScreen(StoU,recvXY):
 
         if mode == "SLEEP_MODE":
             screen.blit(sleep_img,(0,0))
-##            if cam_on :
-##                ret, frame = frontcam.read() #배경캡쳐 됨
-##                cv2.imshow("screen",frame)
-            
-            if cam_on == True and int(time.time() - sleep_start_time) > 30:
-                #frontcam.release()
-                print("relased")
-                #cam_on = False
-
             
         elif mode == "SELECT_MODE":
+            #선택 배경
             screen.blit(select_bg, (0,0))
+            
             select_limit_time = SELECT_TIME -int(time.time()-select_start_time)
             if select_limit_time < 0:
                 if center[0] <int((W-innerW)/2)+innerW/3:
-                    textSurfaceObj = fontObjBig.render("Let's start FIREWORK", True, WHITE)
-                    screen.blit(textSurfaceObj, (10,70))
 
                     firework = funcFirework.FireFunc(screen)
                     mode = "FIREWORK" # [ FIREWORK ]
                     winner_mode = "FIREWORK"
                     
                 elif center[0] <int((W-innerW)/2)+innerW/3*2:
-                    textSurfaceObj = fontObjBig.render("Let's start DRAWING", True, WHITE)
-                    screen.blit(textSurfaceObj, (10,70))
 
                     drawing = funcDrawing.Drawing(screen)
                     mode = "DRAWING" # [ DRAWING ]
                     winner_mode = "DRAWING"
                     
-                else:                    
-                    textSurfaceObj = fontObjBig.render("Let's start VIRUS", True, WHITE)
-                    screen.blit(textSurfaceObj, (50,70))
+                else: 
 
                     virus = funcVirus.VirusFunc(screen)
                     mode = "VIRUS" # [ VIRUS ]
                     winner_mode = "VIRUS"
-
+                
                 
                 pygame.display.flip()  # 화면 전체를 업데이트
                 clock.tick(TARGET_FPS)
@@ -244,22 +217,20 @@ def gameScreen(StoU,recvXY):
                 play_start = True
 
             else:
-                textSurfaceObj = fontObj.render(str(select_limit_time), True, BLACK)
-                screen.blit(textSurfaceObj, (140,35))
-                
-                pygame.draw.rect(screen, RED, [int((W-innerW)/2), H-innerH,innerW/3, H],2) #x,y,w,h [FIREWORK]
-                pygame.draw.rect(screen, PINK, [int((W-innerW)/2)+innerW/3, H-innerH, innerW/3, H],2) # [DRAWING]
-                pygame.draw.rect(screen, GREEN, [int((W-innerW)/2)+innerW/3*2, H-innerH, innerW/3, H],2) # [VIRUS]
-            
+                #선택시간 출력 
+                   
                 if center[0] <int((W-innerW)/2)+innerW/3:
-                    pygame.draw.rect(screen, WHITE, [int((W-innerW)/2), H-innerH,innerW/3, H],5) #x,y,w,h [FIREWORK]
+                    pygame.draw.rect(screen, RED, [int((W-innerW)/2), H-innerH,innerW/3, H],5) #x,y,w,h [FIREWORK]
                     
                 elif int((W-innerW)/2)+innerW/3 <= center[0] <int((W-innerW)/2)+innerW/3*2:
-                    pygame.draw.rect(screen, WHITE, [int((W-innerW)/2)+innerW/3, H-innerH, innerW/3, H],5) # [DRAWING]
+                    pygame.draw.rect(screen, RED, [int((W-innerW)/2)+innerW/3, H-innerH, innerW/3, H],5) # [DRAWING]
+                    
                 elif int((W-innerW)/2)+innerW/3*2 <= center[0] < int((W-innerW)/2)+innerW:
-                    pygame.draw.rect(screen, WHITE, [int((W-innerW)/2)+innerW/3*2, H-innerH, innerW/3, H],5) # [VIRUS]
-                pygame.image.save(screen,"screenshot.jpg")
-                #pygame.draw.circle(screen, (255,255,255), center,15,0)
+                    pygame.draw.rect(screen, RED, [int((W-innerW)/2)+innerW/3*2, H-innerH, innerW/3, H],5) # [VIRUS]
+
+                screen.blit(blank, (0,0))
+                textSurfaceObj = fontObj.render(str(select_limit_time), True, BLACK)
+                screen.blit(textSurfaceObj, (191,35))
                 screen.blit(arrow, (center[0]-50, center[1]-50))
                 
             if cam_on :
@@ -274,11 +245,11 @@ def gameScreen(StoU,recvXY):
 
             else:
                 if winner_mode == "FIREWORK" :
-                    fireworkRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners)
+                    winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners, my_score,reward_limit_time)
                     
                     
                 elif winner_mode == "VIRUS":
-                    virusRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners)
+                    winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners, my_score,reward_limit_time)
 
 
                 elif winner_mode == "DRAWING":                    
@@ -341,25 +312,33 @@ def gameScreen(StoU,recvXY):
                     
                 
                 
-            else:
-                textSurfaceObj = fontObj.render("PLAY TIME:"+str(play_limit_time), True, GREEN)
-                screen.blit(textSurfaceObj, (100,10))
+            else:                
                 if mode == "FIREWORK":
                     if ret:
                         frame = np.flip(frame, axis = 1)
                         firework.fireMain(background_img, frame)
+                        textSurfaceObj = fontObj.render(str(play_limit_time), True, WHITE)
+                        screen.blit(textSurfaceObj, (470,408))
+                        screen.blit(pygame.image.load("./ui_imgs/time_limit.png"),(500,402))
 
                 elif mode == "VIRUS":
                     if ret:
                         frame = np.flip(frame, axis = 1)
                         virus.virusMain(background_img, frame)
+                        textSurfaceObj = fontObj.render(str(play_limit_time), True, BLACK)
+                        screen.blit(textSurfaceObj, (470,408))
+                        screen.blit(pygame.image.load("./ui_imgs/time_limit.png"),(500,402))
                         
                 elif mode == "DRAWING": #발자국 찍기
                     if ret:
                         frame = np.flip(frame, axis = 1)
-                
                         drawing.drawingMain(center,frame, play_limit_time)
-                        
+                        textSurfaceObj = fontObj.render(str(play_limit_time), True, BLACK)
+                        screen.blit(textSurfaceObj, (470,408))
+                        screen.blit(pygame.image.load("./ui_imgs/time_limit.png"),(500,402))
+                
+                
+                
                         
                         
        

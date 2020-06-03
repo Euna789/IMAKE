@@ -139,7 +139,7 @@ class VirusFunc:
         ##instruction
         self.ins = pygame.image.load('./virus_imgs/instruction.png').convert_alpha()
         #font
-        self.myfont = pygame.font.SysFont("comicsansms",20, bold = True)
+        self.myfont = pygame.font.SysFont("comicsansms",30, bold = True)
     
     ##instruction
     def setVolume(self, person):
@@ -174,10 +174,7 @@ class VirusFunc:
         self.screen.fill(self.BLACK)  # 화면을 검은색으로 지운다
         self.screen.blit(self.back_png,(0,0))
 
-        #font size was 10
-        text1 = self.myfont.render(str(self.d_virus),20,(255,255,255))
-        self.screen.blit(text1,(27,28))
-        self.screen.blit(pygame.image.load("./virus_imgs/dead_virus.png"),(66,28))
+
         
 ##        for event in pygame.event.get(): #종료버튼
 ##            if event.type == QUIT:
@@ -223,6 +220,11 @@ class VirusFunc:
             if v.update(mask):
                 self.d_virus += 1
                 del(self.viruses[i])
+
+        #font size was 10 은아 점수 
+        text1 = self.myfont.render(str(self.d_virus),20,(0,0,0))
+        self.screen.blit(text1,(27,28))
+        self.screen.blit(pygame.image.load("./virus_imgs/dead_virus.png"),(66,28))
                 
         if(len(exists[0])==0):
             #안내창 보여주기
@@ -235,7 +237,6 @@ class VirusFunc:
         
     ##------------------------화면 업데이트 ------------------------------
 
-        pygame.display.flip()  # 화면 전체를 업데이트
         self.clock.tick(self.TARGET_FPS)  # 프레임 수 맞추기
 
     #------------------------------- time out----------------------------

@@ -389,5 +389,5 @@ class Drawing:
             cv.imwrite('./drawing_imgs/output/popimage.jpg', img)
             pygame.image.save(self.screen,"./drawing_imgs/output/screenshot.jpg")
         
-        pygame.display.flip()
+        #pygame.display.flip()
             
