@@ -36,6 +36,13 @@ WHITE = (255,255,255)
 sleep_img = pygame.image.load('./ui_imgs/sleep.png')
 blank = pygame.image.load('./ui_imgs/blank.png')
 
+pygame.mixer.init()
+pygame.mixer.pre_init(44100,-16,2,512)
+music = pygame.mixer.Sound('bgMusic.ogg')
+playMusic = False
+rewardMusic = pygame.mixer.Sound('reward.ogg')
+playReward = False
+
 global W
 W= 640
 global H
@@ -185,11 +192,16 @@ def gameScreen(StoU,recvXY):
             screen.blit(sleep_img,(0,0))
             
         elif mode == "SELECT_MODE":
+            if playMusic == False:
+                music.play()
+                playMusic = True
             #선택 배경
             screen.blit(select_bg, (0,0))
             
             select_limit_time = SELECT_TIME -int(time.time()-select_start_time)
             if select_limit_time < 0:
+                music.stop()
+                playMusic = False
                 if center[0] <int((W-innerW)/2)+innerW/3:
 
                     firework = funcFirework.FireFunc(screen)
@@ -242,8 +254,13 @@ def gameScreen(StoU,recvXY):
             if reward_limit_time < 0:
                 reward_start = False
                 select_start = False
+                playReward = False
 
             else:
+                if playReward == False:
+                    rewardMusic.play()
+                    playReward = True
+                    
                 if winner_mode == "FIREWORK" :
                     winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners, my_score,reward_limit_time)
                     
