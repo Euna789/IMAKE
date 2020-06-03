@@ -151,7 +151,7 @@ def gameScreen(StoU,recvXY):
 
     arrow = pygame.image.load('./ui_imgs/arrow.png')
     arrow = pygame.transform.scale(arrow, (int(100), int(100)))
-    select_bg = pygame.image.load('./ui_imgs/select_background.png')
+    select_bg = pygame.image.load('./ui_imgs/select_mode.png')
     select_bg = pygame.transform.scale(select_bg, (int(W), int(H)))
 
     runned = False
@@ -244,8 +244,8 @@ def gameScreen(StoU,recvXY):
                 play_start = True
 
             else:
-                textSurfaceObj = fontObj.render("SELECT TIME:"+str(select_limit_time), True, GREEN)
-                screen.blit(textSurfaceObj, (10,10))
+                textSurfaceObj = fontObj.render(str(select_limit_time), True, BLACK)
+                screen.blit(textSurfaceObj, (140,35))
                 
                 pygame.draw.rect(screen, RED, [int((W-innerW)/2), H-innerH,innerW/3, H],2) #x,y,w,h [FIREWORK]
                 pygame.draw.rect(screen, PINK, [int((W-innerW)/2)+innerW/3, H-innerH, innerW/3, H],2) # [DRAWING]

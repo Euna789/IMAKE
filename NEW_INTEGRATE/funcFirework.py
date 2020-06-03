@@ -184,8 +184,9 @@ class FireFunc:
             '''
 
 
-        text1 = self.myfont.render("Popped Fireworks: " + str(self.points.p_fw),20,(0,128,0)) # 터뜨린 개수 출력
-        self.screen.blit(text1,(10,10))
+        text1 = self.myfont.render(str(self.points.p_fw),20,(255,255,255)) # 터뜨린 개수 출력
+        self.screen.blit(text1,(27,28))
+        self.screen.blit(pygame.image.load("firework_imgs/popped_fireworks.png"),(66,28))
                                     
         self.screen.blit(self.bgimage,(0,0))
         

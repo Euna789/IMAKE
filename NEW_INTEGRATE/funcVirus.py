@@ -175,8 +175,9 @@ class VirusFunc:
         self.screen.blit(self.back_png,(0,0))
 
         #font size was 10
-        text1 = self.myfont.render("Dead viruses: " + str(self.d_virus),20,(0,128,0))
-        self.screen.blit(text1,(10,10))
+        text1 = self.myfont.render(str(self.d_virus),20,(255,255,255))
+        self.screen.blit(text1,(27,28))
+        self.screen.blit(pygame.image.load("./virus_imgs/dead_virus.png"),(66,28))
         
 ##        for event in pygame.event.get(): #종료버튼
 ##            if event.type == QUIT:
