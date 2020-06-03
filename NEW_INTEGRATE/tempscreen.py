@@ -132,7 +132,7 @@ def gameScreen(StoU,recvXY):
     SELECT_TIME = 5
     WARNING_TIME = 2
     PLAY_TIME = 15
-    REWARD_TIME = 5
+    REWARD_TIME = 8
     global fontObj
     fontObj = pygame.font.Font('C:\Windows\Fonts\Arial.ttf', 32)
     global fontObjBig
@@ -191,7 +191,7 @@ def gameScreen(StoU,recvXY):
                 
 
         if mode == "SLEEP_MODE":
-            print(mode)
+            #print(mode)
             screen.blit(sleep_img,(0,0))
             
         elif mode == "SELECT_MODE":
@@ -287,7 +287,7 @@ def gameScreen(StoU,recvXY):
 
                 if winner_mode == "FIREWORK" : #------------------DB upload 섹션
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-##                    img_upload.upload_img('Firework','./firework_imgs/output/screenshot.jpg','./firework_imgs/output/popimage.jpg')
+                    img_upload.upload_img('Firework','./firework_imgs/output/screenshot.jpg','./firework_imgs/output/popimage.jpg')
                     
                     my_score = firework.points.p_fw
 
@@ -297,13 +297,13 @@ def gameScreen(StoU,recvXY):
                     reward_winners = firework_winners
                     
                     my_screen_img = pygame.image.load('./firework_imgs/output/screenshot.jpg')
-                    my_qr_img = pygame.image.load('./firework_imgs/output/qr_popimage.jpg')
+                    my_qr_img = pygame.image.load('qr_popimage.jpg')
                     score1_img = pygame.image.load('./firework_imgs/output/score1.jpg')
                     
                 elif winner_mode == "VIRUS":
                     cv2.imwrite('./virus_imgs/output/popimage.jpg',frame)
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-##                    img_upload.upload_img('Virus','./virus_imgs/output/screenshot.jpg','./virus_imgs/output/popimage.jpg')
+                    img_upload.upload_img('Virus','./virus_imgs/output/screenshot.jpg','./virus_imgs/output/popimage.jpg')
                     
                     my_score = virus.d_virus
                     
@@ -313,16 +313,16 @@ def gameScreen(StoU,recvXY):
                     reward_winners = virus_winners
 
                     my_screen_img = pygame.image.load('./virus_imgs/output/screenshot.jpg')
-                    my_qr_img = pygame.image.load('./virus_imgs/output/qr_popimage.jpg')
+                    my_qr_img = pygame.image.load('qr_popimage.jpg')
                     score1_img = pygame.image.load('./virus_imgs/output/score1.jpg')
 
                 elif winner_mode == "DRAWING":
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-##                    img_upload.upload_img('Drawing','./drawing_imgs/output/screenshot.jpg''./drawing_imgs/output/popimage.jpg')
+                    img_upload.upload_img('Drawing','./drawing_imgs/output/screenshot.jpg','./drawing_imgs/output/popimage.jpg')
                     
                     my_person_img = pygame.image.load('./drawing_imgs/output/popimage.jpg')
                     my_screen_img = pygame.image.load('./drawing_imgs/output/screenshot.jpg')
-                    my_qr_img = pygame.image.load('./virus_imgs/output/qr_popimage.jpg')
+                    my_qr_img = pygame.image.load('qr_popimage.jpg')
                     
 
 
