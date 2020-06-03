@@ -128,13 +128,6 @@ class VirusFunc:
 
     def __init__(self, screen):
         # set sound to initial value
-        self.sound = pygame.mixer.Sound("./virus_imgs/Rain.wav")
-        self.sound.set_volume(1)
-
-        self.chan1 = pygame.mixer.Channel(0)
-        self.chan1.play(self.sound,-1)
-        self.chan1.set_volume(1.0, 1.0)
-        
         self.screen = screen
         ##instruction
         self.ins = pygame.image.load('./virus_imgs/instruction.png').convert_alpha()
@@ -229,11 +222,10 @@ class VirusFunc:
         if(len(exists[0])==0):
             #안내창 보여주기
             self.screen.blit(self.ins,(108,176))
-            self.chan1.set_volume(1.0, 1.0)
-        else:
-            a = thresh_img.copy()
-            l_sound, r_sound = VirusFunc.setVolume(self, a)
-            self.chan1.set_volume(l_sound, r_sound)
+##        else:
+##            a = thresh_img.copy()
+##            l_sound, r_sound = VirusFunc.setVolume(self, a)
+##            self.chan1.set_volume(l_sound, r_sound)
         
     ##------------------------화면 업데이트 ------------------------------
 

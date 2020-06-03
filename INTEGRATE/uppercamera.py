@@ -13,6 +13,9 @@ innerH= int(380)
 
 display = (W, H)
 TARGET_FPS = 60
+
+fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+out_up = cv2.VideoWriter('output_up.avi',fourcc, 25.0, (W,H))
      
 def upperCam(UtoS,sendXY):
     none_count = 0 
@@ -40,6 +43,8 @@ def upperCam(UtoS,sendXY):
         if not ret:
             continue
         '''
+        out_up.write(orig_frame)
+        
         orig_frame = cv2.resize(orig_frame, display)
         gray = cv2.cvtColor(orig_frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.medianBlur(gray,5)
@@ -111,5 +116,11 @@ def upperCam(UtoS,sendXY):
         #cv2.putText(orig_frame, txt, (100, 200), cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255), 2)
         cv2.imshow("frame", orig_frame)
 
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            video.release()
+            out_up.release()
+            break
+
         cv2.waitKey(1)
      
+cv2.destroyAllWindows()

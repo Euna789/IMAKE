@@ -36,6 +36,7 @@ WHITE = (255,255,255)
 sleep_img = pygame.image.load('./ui_imgs/sleep.png')
 blank = pygame.image.load('./ui_imgs/blank.png')
 
+global playMusic, playReward, music, rewardMusic
 pygame.mixer.init()
 pygame.mixer.pre_init(44100,-16,2,512)
 music = pygame.mixer.Sound('bgMusic.ogg')
@@ -177,7 +178,8 @@ def gameScreen(StoU,recvXY):
     cam_on = True
     
     while True:
-
+        global playMusic, playReward, music, rewardMusic
+        
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
                 print(pygame.mouse.get_pos())
@@ -192,6 +194,7 @@ def gameScreen(StoU,recvXY):
             screen.blit(sleep_img,(0,0))
             
         elif mode == "SELECT_MODE":
+            
             if playMusic == False:
                 music.play()
                 playMusic = True
@@ -221,7 +224,7 @@ def gameScreen(StoU,recvXY):
                     winner_mode = "VIRUS"
                 
                 
-                pygame.display.flip()  # 화면 전체를 업데이트
+                #pygame.display.flip()  # 화면 전체를 업데이트
                 clock.tick(TARGET_FPS)
                 cv2.waitKey(1000)
                 screen.fill(BLACK)

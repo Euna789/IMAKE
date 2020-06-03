@@ -14,6 +14,9 @@ innerH= H
 display = (W, H)
 TARGET_FPS = 60
 
+fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+out_up = cv2.VideoWriter('output_up.avi',fourcc, 25.0, (W,H))
+
 def preprocess(frame):
 
     frame = cv2.bilateralFilter(frame, 9, 75, 75)
@@ -59,6 +62,8 @@ def upperCam(UtoS,sendXY):
         if not ret:
             continue
         '''
+        out_up.write(orig_frame)
+        
         orig_frame = cv2.resize(orig_frame, display)
 
         gray = preprocess(orig_frame)
@@ -113,6 +118,7 @@ def upperCam(UtoS,sendXY):
 
          
         if Sleep == True: #[ 절전모드 ] - gamescreen에 절전 창 뜨도록 함
+            UtoS.send("SLEEP_MODE")
             cv2.putText(orig_frame, "Sleep Mode", (100, 100), cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255), 2)
             
         elif Sleep == False:
@@ -130,6 +136,11 @@ def upperCam(UtoS,sendXY):
         txt = str(none_count)+","+str(TARGET_FPS*NONE_SEC)
         #cv2.putText(orig_frame, txt, (100, 200), cv2.FONT_HERSHEY_SIMPLEX,2,(255,255,255), 2)
         cv2.imshow("frame", orig_frame)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            video.release()
+            out_up.release()
+            break
 
         cv2.waitKey(1)
      

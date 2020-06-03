@@ -45,6 +45,11 @@ innerW= 440
 global innerH
 innerH= int(380)
 
+'''
+fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+out_temp = cv2.VideoWriter('output_front.avi',fourcc, 25.0, (W,H))
+'''
+
 def comparingScore(winner_array, my_score, my_img, where):
     winner_array.append(my_score)
     best = winner_array
@@ -178,6 +183,9 @@ def gameScreen(StoU,recvXY):
     
     while True:
         screen.fill(BLACK)
+        ret, frame = frontcam.read()
+        cv2.imshow("front", frame)
+        #out_temp.write(frame)
         
         if recvXY.poll():
             center = recvXY.recv()
@@ -249,9 +257,9 @@ def gameScreen(StoU,recvXY):
                     
                 pygame.draw.circle(screen, (255,255,255), center,15,0)
                 
-            if cam_on :
-                ret, frame = frontcam.read() #배경캡쳐 됨
-                cv2.imshow("screen",frame)
+##            if cam_on :
+##                ret, frame = frontcam.read() #배경캡쳐 됨
+##                cv2.imshow("screen",frame)
                 
         elif mode == "REWARD_MODE":
             reward_limit_time = REWARD_TIME -int(time.time()-reward_start_time)
@@ -276,7 +284,8 @@ def gameScreen(StoU,recvXY):
                 
         else:   #[컨텐츠 실행 처리]
             play_limit_time = PLAY_TIME -int(time.time()-play_start_time)
-            ret, frame = frontcam.read()
+##            ret, frame = frontcam.read()
+##
             
             if play_limit_time < 0: #리워드로 넘어가야됨 -----> 수정) Play_start == False
 
@@ -355,10 +364,10 @@ def gameScreen(StoU,recvXY):
                         screen.blit(textSurfaceObj, (210,H/2))
                         pygame.display.flip()  # 화면 전체를 업데이트
                                 
-                        frontcam = cv2.VideoCapture(0)
-                        frontcam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
-                        frontcam.set(cv2.CAP_PROP_FRAME_WIDTH,W)
-                        frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
+##                        frontcam = cv2.VideoCapture(0)
+##                        frontcam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
+##                        frontcam.set(cv2.CAP_PROP_FRAME_WIDTH,W)
+##                        frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
                         
                         cam_on = True
                         mode = "SLEEP_MODE"
@@ -380,8 +389,13 @@ def gameScreen(StoU,recvXY):
 ##                screen.blit(textSurfaceObj, (210,400))
 ##            else:
 ##                warning_start = False
-                    
-                
+
+        '''       
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            frontcam.release()
+            out_temp.release()
+            break
+        '''
         pygame.display.flip()  # 화면 전체를 업데이트
         clock.tick(TARGET_FPS)  # 프레임 수 맞추기
         
@@ -393,3 +407,5 @@ def gameScreen(StoU,recvXY):
 ##UtoS.send("SELECT_MODE")
 ##sendXY.send((3"DRAWING",240))
 ##gameScreen(StoU,recvXY)
+
+cv2.destroyAllWindows()
