@@ -38,7 +38,7 @@ def preprocess(frame):
    
 def upperCam(UtoS,sendXY):
     none_count = 0 
-    NONE_SEC = 20 #사람 없는 거 최대 몇 초까지 보고 절전모드할 지
+    NONE_SEC = 5 #사람 없는 거 최대 몇 초까지 보고 절전모드할 지
     latest_location = (0,0)
     valid_circle = 0
     
@@ -123,6 +123,7 @@ def upperCam(UtoS,sendXY):
             
         elif Sleep == False:
             if none_count > TARGET_FPS*NONE_SEC:
+                print(none_count, ":", TARGET_FPS*NONE_SEC)
                 Sleep=True
                 valid_circle = 0
                 UtoS.send("SLEEP_MODE")

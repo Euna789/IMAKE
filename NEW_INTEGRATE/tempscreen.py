@@ -191,6 +191,7 @@ def gameScreen(StoU,recvXY):
                 
 
         if mode == "SLEEP_MODE":
+            print(mode)
             screen.blit(sleep_img,(0,0))
             
         elif mode == "SELECT_MODE":
@@ -366,10 +367,11 @@ def gameScreen(StoU,recvXY):
             RECV_MODE = StoU.recv()
             
             if RECV_MODE == "SLEEP_MODE":
+                mode = "SLEEP_MODE"
                 select_start = False
                 if cam_on == True:
                     sleep_start_time = time.time()
-                    mode = "SLEEP_MODE"
+                    
                 
             elif RECV_MODE == "SELECT_MODE":
                 if select_start == False : #셀렉트 타임아웃때문에 필요한 select_time

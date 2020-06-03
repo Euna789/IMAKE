@@ -348,6 +348,7 @@ def gameScreen(StoU,recvXY):
             RECV_MODE = StoU.recv()
             
             if RECV_MODE == "SLEEP_MODE":
+                mode = "SLEEP_MODE"
                 select_start = False
                 if cam_on == True:
                     sleep_start_time = time.time()
@@ -370,7 +371,7 @@ def gameScreen(StoU,recvXY):
 ##                        frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)
                         
                         cam_on = True
-                        mode = "SLEEP_MODE"
+                        mode = "SELECT_MODE"
 
                     elif cam_on ==True:
                         mode = "SELECT_MODE"
