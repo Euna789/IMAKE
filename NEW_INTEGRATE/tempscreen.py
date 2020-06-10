@@ -20,7 +20,7 @@ mode
 
 10 == FIREWORK
 
-"DRAWING" == VIRUS
+"DRAWING" == VIRUS!!
 
 '''
 BLACK= (0,0,0) #R G B
@@ -131,8 +131,8 @@ def gameScreen(StoU,recvXY):
     
     SELECT_TIME = 5
     WARNING_TIME = 2
-    PLAY_TIME = 15
-    REWARD_TIME = 8
+    PLAY_TIME = 20
+    REWARD_TIME = 5
     global fontObj
     fontObj = pygame.font.Font('C:\Windows\Fonts\Arial.ttf', 32)
     global fontObjBig
@@ -179,10 +179,10 @@ def gameScreen(StoU,recvXY):
     
     while True:
         global playMusic, playReward, music, rewardMusic
-        
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONUP:
-                print(pygame.mouse.get_pos())
+
+
+        #center = pygame.mouse.get_pos()
+
                     
         screen.fill(BLACK)
         
@@ -191,7 +191,7 @@ def gameScreen(StoU,recvXY):
                 
 
         if mode == "SLEEP_MODE":
-            #print(mode)
+            
             screen.blit(sleep_img,(0,0))
             
         elif mode == "SELECT_MODE":
@@ -258,7 +258,7 @@ def gameScreen(StoU,recvXY):
             if reward_limit_time < 0:
                 reward_start = False
                 select_start = False
-                playReward = False
+                mode = "SLEEP_MODE"#playReward = False
 
             else:
                 if playReward == False:
@@ -287,7 +287,7 @@ def gameScreen(StoU,recvXY):
 
                 if winner_mode == "FIREWORK" : #------------------DB upload 섹션
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-                    img_upload.upload_img('Firework','./firework_imgs/output/screenshot.jpg','./firework_imgs/output/popimage.jpg')
+##                    img_upload.upload_img('Firework','./firework_imgs/output/screenshot.jpg','./firework_imgs/output/popimage.jpg')
                     
                     my_score = firework.points.p_fw
 
@@ -297,13 +297,13 @@ def gameScreen(StoU,recvXY):
                     reward_winners = firework_winners
                     
                     my_screen_img = pygame.image.load('./firework_imgs/output/screenshot.jpg')
-                    my_qr_img = pygame.image.load('qr_popimage.jpg')
+                    my_qr_img = pygame.image.load('./firework_imgs/output/qr_popimage.jpg')
                     score1_img = pygame.image.load('./firework_imgs/output/score1.jpg')
                     
                 elif winner_mode == "VIRUS":
                     cv2.imwrite('./virus_imgs/output/popimage.jpg',frame)
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-                    img_upload.upload_img('Virus','./virus_imgs/output/screenshot.jpg','./virus_imgs/output/popimage.jpg')
+##                    img_upload.upload_img('Virus','./virus_imgs/output/screenshot.jpg','./virus_imgs/output/popimage.jpg')
                     
                     my_score = virus.d_virus
                     
@@ -313,16 +313,16 @@ def gameScreen(StoU,recvXY):
                     reward_winners = virus_winners
 
                     my_screen_img = pygame.image.load('./virus_imgs/output/screenshot.jpg')
-                    my_qr_img = pygame.image.load('qr_popimage.jpg')
+                    my_qr_img = pygame.image.load('./virus_imgs/output/qr_popimage.jpg')
                     score1_img = pygame.image.load('./virus_imgs/output/score1.jpg')
 
                 elif winner_mode == "DRAWING":
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-                    img_upload.upload_img('Drawing','./drawing_imgs/output/screenshot.jpg','./drawing_imgs/output/popimage.jpg')
+##                    img_upload.upload_img('Drawing','./drawing_imgs/output/screenshot.jpg''./drawing_imgs/output/popimage.jpg')
                     
                     my_person_img = pygame.image.load('./drawing_imgs/output/popimage.jpg')
                     my_screen_img = pygame.image.load('./drawing_imgs/output/screenshot.jpg')
-                    my_qr_img = pygame.image.load('qr_popimage.jpg')
+                    my_qr_img = pygame.image.load('./virus_imgs/output/qr_popimage.jpg')
                     
 
 
@@ -384,7 +384,7 @@ def gameScreen(StoU,recvXY):
                         screen.blit(textSurfaceObj, (210,H/2))
                         pygame.display.flip()  # 화면 전체를 업데이트
                                 
-                        frontcam = cv2.VideoCapture(0)
+                        frontcam = cv2.VideoCapture('6.mp4')
                         frontcam.set(cv2.CAP_PROP_AUTOFOCUS, 0)
                         frontcam.set(cv2.CAP_PROP_FRAME_WIDTH,W)
                         frontcam.set(cv2.CAP_PROP_FRAME_HEIGHT,H)

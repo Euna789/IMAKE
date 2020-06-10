@@ -55,7 +55,7 @@ def upperCam(UtoS,sendXY):
 
         ret, orig_frame = video.read()
         if not ret:
-            video = cv2.VideoCapture('video2.mp4')
+            video = cv2.VideoCapture(0)
             continue
         '''
         ret, orig_frame = frontcam.read()
@@ -144,4 +144,4 @@ def upperCam(UtoS,sendXY):
             break
 
         cv2.waitKey(1)
-     
+        ##
