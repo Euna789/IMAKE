@@ -13,6 +13,7 @@ import numpy as np
 import funcVirus
 import funcFirework
 import funcDrawing
+import dbManager 
 '''
 mode
 0 == SLEEP_MODE
@@ -73,7 +74,7 @@ def comparingScore(winner_array, my_score, my_img, where):
     return result
             
 
-def winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners, my_score,reward_limit_time):
+def winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners, my_score,reward_limit_time, content_num):
     my_person_img = pygame.transform.scale(my_person_img, (int(W/2), int(H/2)))
     my_qr_img = pygame.transform.scale(my_qr_img, (int(H/4), int(H/4)))
     score1_img = pygame.transform.scale(score1_img, (int(H/4)-4, int(H/4-10)))
@@ -101,11 +102,14 @@ def winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_i
     #리워드 남은시간
     textSurfaceObj = fontObjBig.render(str(reward_limit_time), True, WHITE)
     screen.blit(textSurfaceObj, (533,403))
-    
+
+    #db
+    dbManager.addInfos(content_num, 20, 1)
+    dbManager.addScore(content_num, my_score)
     return screen
 
 def drawingRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, reward_limit_time):
-                   
+    
     my_person_img = pygame.transform.scale(my_person_img, (int(W/2), int(H/2)))
     my_qr_img = pygame.transform.scale(my_qr_img, (int(H/4), int(H/4)))
     reward_gr = pygame.image.load('./ui_imgs/drawing_reward_green.png')
@@ -118,7 +122,10 @@ def drawingRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, reward_
     
     textSurfaceObj = fontObjBig.render(str(reward_limit_time), True, WHITE)
     screen.blit(textSurfaceObj, (530,19))
-    
+
+    #db
+    dbManager.addInfos(0, 20, 1)
+    dbManager.addScore(0, 0)
     return screen
 
 def gameScreen(StoU,recvXY):
@@ -266,11 +273,11 @@ def gameScreen(StoU,recvXY):
                     playReward = True
                     
                 if winner_mode == "FIREWORK" :
-                    winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners, my_score,reward_limit_time)
+                    winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners, my_score,reward_limit_time,1)
                     
                     
                 elif winner_mode == "VIRUS":
-                    winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners, my_score,reward_limit_time)
+                    winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_img, reward_winners, my_score,reward_limit_time,2)
 
 
                 elif winner_mode == "DRAWING":                    
