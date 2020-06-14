@@ -104,8 +104,8 @@ def winnerRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, score1_i
     screen.blit(textSurfaceObj, (533,403))
 
     #db
-    dbManager.addInfos(content_num, 20, 1)
-    dbManager.addScore(content_num, my_score)
+    #dbManager.addInfos(content_num, 20, 1)
+    #dbManager.addScore(content_num, my_score)
     return screen
 
 def drawingRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, reward_limit_time):
@@ -124,8 +124,8 @@ def drawingRewardScreen(screen, my_screen_img, my_person_img, my_qr_img, reward_
     screen.blit(textSurfaceObj, (530,19))
 
     #db
-    dbManager.addInfos(0, 20, 1)
-    dbManager.addScore(0, 0)
+    #dbManager.addInfos(0, 20, 1)
+    #dbManager.addScore(0, 0)
     return screen
 
 def gameScreen(StoU,recvXY):
@@ -258,7 +258,7 @@ def gameScreen(StoU,recvXY):
                 
             if cam_on :
                 ret, frame = frontcam.read() #배경캡쳐 됨
-                cv2.imshow("screen",frame)
+                #cv2.imshow("screen",frame)
                 
         elif mode == "REWARD_MODE":
             reward_limit_time = REWARD_TIME -int(time.time()-reward_start_time)
@@ -289,12 +289,12 @@ def gameScreen(StoU,recvXY):
         else:   #[컨텐츠 실행 처리]
             play_limit_time = PLAY_TIME -int(time.time()-play_start_time)
             ret, frame = frontcam.read()
-            
+            playReward = False
             if play_limit_time < 0: #리워드로 넘어가야됨 -----> 수정) Play_start == False
 
                 if winner_mode == "FIREWORK" : #------------------DB upload 섹션
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-##                    img_upload.upload_img('Firework','./firework_imgs/output/screenshot.jpg','./firework_imgs/output/popimage.jpg')
+                    img_upload.upload_img('Firework','./firework_imgs/output/screenshot.jpg','./firework_imgs/output/popimage.jpg','./firework_imgs/output/qr_popimage.jpg')
                     
                     my_score = firework.points.p_fw
 
@@ -310,7 +310,7 @@ def gameScreen(StoU,recvXY):
                 elif winner_mode == "VIRUS":
                     cv2.imwrite('./virus_imgs/output/popimage.jpg',frame)
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-##                    img_upload.upload_img('Virus','./virus_imgs/output/screenshot.jpg','./virus_imgs/output/popimage.jpg')
+                    img_upload.upload_img('Virus','./virus_imgs/output/screenshot.jpg','./virus_imgs/output/popimage.jpg','./virus_imgs/output/qr_popimage.jpg')
                     
                     my_score = virus.d_virus
                     
@@ -325,11 +325,11 @@ def gameScreen(StoU,recvXY):
 
                 elif winner_mode == "DRAWING":
                     # 서버에 사진 넣기 (사용자 다운로드 용도)
-##                    img_upload.upload_img('Drawing','./drawing_imgs/output/screenshot.jpg''./drawing_imgs/output/popimage.jpg')
+                    img_upload.upload_img('Drawing','./drawing_imgs/output/screenshot.jpg','./drawing_imgs/output/popimage.jpg','./drawing_imgs/output/qr_popimage.jpg')
                     
                     my_person_img = pygame.image.load('./drawing_imgs/output/popimage.jpg')
                     my_screen_img = pygame.image.load('./drawing_imgs/output/screenshot.jpg')
-                    my_qr_img = pygame.image.load('./virus_imgs/output/qr_popimage.jpg')
+                    my_qr_img = pygame.image.load('./drawing_imgs/output/qr_popimage.jpg')
                     
 
 

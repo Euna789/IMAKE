@@ -1,11 +1,11 @@
 from datetime import datetime
 import pymysql
 
-host = "10.200.37.130"   # ip address of server
+host = "10.200.37.15"   # ip address of server
 
 def init_program_info():
 
-    host = "192.168.0.6"
+    host = "10.200.37.15"
     user = "user"
     password = "1234"
     db = "imake"
@@ -27,7 +27,7 @@ def init_program_info():
     
 def addInfos(game_type, time, new_user):
     
-    host = "192.168.0.6"
+    host = "10.200.37.15"
     user = "user"
     password = "1234"
     db = "imake"

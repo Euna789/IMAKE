@@ -8,9 +8,9 @@ import time
 import qrcode
 from bs4 import BeautifulSoup
 
-server_ip = "http://10.200.37.1:8000"
+server_ip = "http://10.200.37.15:8000"
 
-def upload_img(program_info, content_img, user_img):
+def upload_img(program_info, content_img, user_img, qr_img_path):
     ctime = time.strftime("%Y, %m, %d, %H, %M", time.localtime(time.time()))
         
     files = {'user_img':open(user_img,'rb'),'content_img':open(content_img,'rb')}
@@ -27,7 +27,7 @@ def upload_img(program_info, content_img, user_img):
     view_url = server_ip + my_img
     
     qr = qrcode.make(view_url)
-    qr.save('qr_popimage.jpg')
+    qr.save(qr_img_path)
 
 
 
