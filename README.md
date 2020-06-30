@@ -27,7 +27,7 @@
 https://github.com/vyongs/IMAKE/blob/master/NEW_INTEGRATE/main.py
 
 ###
-### 발표(설명) 비디오
+### 발표(데모) 비디오
 https://youtu.be/G_GHQXAvJxs  
 
 ###
